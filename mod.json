@@ -1,0 +1,34 @@
+{
+	"geode": "2.0.0-beta.20",
+	"version": "v1.0.0-beta.1",
+	"gd": {
+		"android": "2.205",
+		"ios": "2.205",
+		"mac": "2.200",
+		"win": "2.204"
+	},
+	"settings": {
+		"demons": {
+            "name": "Demons",
+            "description": "Demons show up in the garage.",
+            "type": "bool",
+            "default": true
+        },
+		"no-lock-hint": {
+            "name": "Remove Lock Hint",
+            "description": "Removes the \"Tap lock icon for more info!\" text.",
+            "type": "bool",
+            "default": true
+        },
+		"creator-btn-enabled": {
+            "name": "Enable Creator Button",
+            "description": "Add a creator button under the shards and color.",
+            "type": "bool",
+            "default": true
+        }
+	},
+	"id": "omgrod.garage_plus",
+	"name": "Garage Plus",
+	"developer": "OmgRod",
+	"description": "Several improvements on the garage."
+}
