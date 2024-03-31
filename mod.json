@@ -1,11 +1,14 @@
 {
-	"geode": "2.0.0-beta.20",
-	"version": "v1.0.0-beta.1",
+	"geode": "2.0.0-beta.23",
+	"version": "v1.0.0",
 	"gd": {
 		"android": "2.205",
 		"ios": "2.205",
 		"mac": "2.200",
 		"win": "2.204"
+	},
+	"resources": {
+		"sprites": ["resources/GaragePlus_creatorBtn.png"]
 	},
 	"settings": {
 		"demons": {
@@ -27,8 +30,14 @@
             "default": true
         }
 	},
+	"repository": "https://github.com/0mgRod/Garage-Plus",
 	"id": "omgrod.garage_plus",
 	"name": "Garage Plus",
 	"developer": "OmgRod",
-	"description": "Several improvements on the garage."
+	"description": "Several improvements on the garage.",
+	"dependencies": [{
+		"id": "geode.node-ids",
+		"version": ">=v1.8.1",
+		"importance": "required"
+	}]
 }
