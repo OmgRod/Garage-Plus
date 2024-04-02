@@ -1,6 +1,6 @@
 {
 	"geode": "2.0.0-beta.23",
-	"version": "v1.0.0",
+	"version": "v1.1.0",
 	"gd": {
 		"android": "2.205",
 		"ios": "2.205",
@@ -14,6 +14,12 @@
 		"demons": {
             "name": "Demons",
             "description": "Demons show up in the garage.",
+            "type": "bool",
+            "default": true
+        },
+		"cp": {
+            "name": "Creator Points",
+            "description": "Creator Points show up in the garage.",
             "type": "bool",
             "default": true
         },

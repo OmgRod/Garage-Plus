@@ -1,6 +1,0 @@
-        "cp": {
-            "name": "Creator Points",
-            "description": "creator Points show up in the garage.",
-            "type": "bool",
-            "default": true
-        },

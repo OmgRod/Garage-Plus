@@ -74,50 +74,71 @@ class $modify(GJGarageLayer) {
 		}
 
 		if (cp) {
-			/*
-			auto winSize = CCDirector::sharedDirector()->getWinSize();
-auto demonIcon = CCSprite::createWithSpriteFrameName("GJ_hammerIcon_001.png");
-demonIcon->setPosition({winSize.width - 18, winSize.height - 132});
-demonIcon->setAnchorPoint({0.5, 0.5});
-demonIcon->setScale({0.5});
-demonIcon->setID("cp-icon");
+            auto winSize = CCDirector::sharedDirector()->getWinSize();
+            auto demonIcon = CCSprite::createWithSpriteFrameName("GJ_hammerIcon_001.png");
+            demonIcon->setPosition({winSize.width - 18, winSize.height - 132});
+            demonIcon->setAnchorPoint({0.5, 0.5});
+            demonIcon->setScale({0.5});
+            demonIcon->setID("cp-icon");
+            this->addChild(demonIcon);
 
-// Fetch the username synchronously
-std::string username = GJAccountManager::get()->m_username;
+            int accID = GJAccountManager::get()->m_accountID;
 
-// Fetch the text asynchronously from the URL using the username
-web::AsyncWebRequest()
-  .fetch("https://ksr.ps.fhgdps.com/incl/misc/getAccountCP.php?username=" + username)
-  .text()
-  .then([=](std::string const& usernameParam) {
-        auto demonText = CCLabelBMFont::create(usernameParam.c_str(), "bigFont.fnt");
-
-        // Check if the demons-label node exists before accessing its position
-        auto demonsLabelNode = this->getChildByID("demons-label");
-        if (demonsLabelNode) {
-            demonText->setPosition(CCPoint(demonIcon->getPositionX() - 12, demonsLabelNode->getPositionY() - 15));
-        } else {
-            // Handle the case where demons-label node does not exist
-            // For example, log a warning or set a default position
-            std::cerr << "Warning: demons-label node not found." << std::endl;
-            demonText->setPosition(CCPoint(demonIcon->getPositionX() - 12, 0)); // Set a default position
+           	// Fetch creator points asynchronously with improved error handling
+			web::AsyncWebRequest()
+    .bodyRaw(fmt::format("secret=Wmfd2893gb7&targetAccountID={}", accID))
+    .userAgent("")
+    .method("POST")
+    .fetch("https://www.boomlings.com/database/getGJUserInfo20.php")
+    .text()
+    .then([=](std::string const& response) {
+        // Find the position of ":8:"
+        auto start_pos = response.find(":8:");
+        if (start_pos == std::string::npos) {
+            // ":8:" not found, handle the error
+            std::cerr << "Failed to find ':8:' in response: " << response << std::endl;
+            return;
         }
+        
+        // Find the position of the next ':'
+        auto end_pos = response.find(":", start_pos + 3); // Start searching from the character after ":8:"
+        if (end_pos == std::string::npos) {
+            // ':' not found, handle the error
+            std::cerr << "Failed to find ':' after ':8:' in response: " << response << std::endl;
+            return;
+        }
+        
+        // Extract the substring between ":8:" and the following ":"
+        std::string pointsStr = response.substr(start_pos + 3, end_pos - start_pos - 3);
 
-        demonText->setScale(0.34);
-        demonText->setAnchorPoint({1, 0.5});
-        demonText->setID("cp-label");
-
-        this->addChild(demonText);
-        this->addChild(demonIcon);
-        this->updateLayout();
+        // Extract creator points (assuming they are integers)
+        int creatorPoints;
+        try {
+            creatorPoints = std::stoi(pointsStr);
+            // Create label and add it to the scene
+            auto cpText = CCLabelBMFont::create(pointsStr.c_str(), "bigFont.fnt");
+            cpText->setPosition(CCPoint(demonIcon->getPositionX() - 12, demonIcon->getPositionY()));
+            cpText->setScale(0.34);
+            cpText->setAnchorPoint({1, 0.5});
+            cpText->setID("cp-label");
+            this->addChild(cpText);
+            this->updateLayout();
+        } catch (const std::invalid_argument& e) {
+            std::cerr << "Failed to convert creator points to integer: " << e.what() << std::endl;
+            auto cpText = CCLabelBMFont::create("Error", "bigFont.fnt");
+            cpText->setPosition(CCPoint(demonIcon->getPositionX() - 12, demonIcon->getPositionY()));
+            cpText->setScale(0.34);
+            cpText->setAnchorPoint({1, 0.5});
+            cpText->setID("cp-label");
+            this->addChild(cpText);
+            this->updateLayout();
+            return;
+        }
     })
-  .expect([](std::string const& error) {
-        std::cerr << "Failed to fetch username parameter: " << error << std::endl;
+    .expect([](std::string const& error) {
+        std::cerr << "Failed to fetch creator points: " << error << std::endl;
     });
-
-	*/
-
-		}
+        }
 
 		if (tapLockHint) {
 			this->removeChildByID("tap-more-hint");
