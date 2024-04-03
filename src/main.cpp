@@ -88,7 +88,7 @@ class $modify(GJGarageLayer) {
 		if (cp) {
             auto winSize = CCDirector::sharedDirector()->getWinSize();
             auto demonIcon = CCSprite::createWithSpriteFrameName("GJ_hammerIcon_001.png");
-            if (demons) {
+            if (demons || this->getChildByID("demons-icon")) {
                 demonIcon->setPosition({winSize.width - 18, winSize.height - 132});
             } else {
                 demonIcon->setPosition({winSize.width - 18, winSize.height - 117});

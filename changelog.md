@@ -1,3 +1,8 @@
+# v1.2.1
+
+- Added mod logo
+- Fixed bug: Demons disabled and CP enabled in mod, but users with "Demons in Garage" mod enabled caused CP to overlap demon count.
+
 # v1.2.0
 
 - Added top buttons setting
