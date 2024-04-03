@@ -1,6 +1,6 @@
 {
 	"geode": "2.0.0-beta.23",
-	"version": "v1.1.0",
+	"version": "v1.2.0",
 	"gd": {
 		"android": "2.205",
 		"ios": "2.205",
@@ -8,7 +8,12 @@
 		"win": "2.204"
 	},
 	"resources": {
-		"sprites": ["resources/GaragePlus_creatorBtn.png"]
+		"sprites": [
+			"resources/GaragePlus_creatorBtn.png",
+			"resources/GaragePlus_cpIcon.png",
+			"resources/GaragePlus_settingsBtn.png",
+			"resources/GaragePlus_feedbackBtn.png"
+		]
 	},
 	"settings": {
 		"demons": {
@@ -19,7 +24,7 @@
         },
 		"cp": {
             "name": "Creator Points",
-            "description": "Creator Points show up in the garage.",
+            "description": "Creator Points show up in the garage. Click the CP icon to refresh.",
             "type": "bool",
             "default": true
         },
@@ -34,6 +39,12 @@
             "description": "Add a creator button under the shards and color.",
             "type": "bool",
             "default": true
+        },
+		"top-buttons": {
+            "name": "Mod Options",
+            "description": "Adds a top bar of buttons (requires Remove Lock Hint setting enabled)",
+            "type": "bool",
+            "default": true
         }
 	},
 	"repository": "https://github.com/0mgRod/Garage-Plus",
@@ -45,5 +56,9 @@
 		"id": "geode.node-ids",
 		"version": "v1.8.1",
 		"importance": "required"
-	}]
+	}],
+	"issues": {
+		"info": "Report issues to OmgRod on GitHub and they may be fixed in a future release.",
+		"url": "https://github.com/0mgRod/Garage-Plus/issues"
+	}
 }

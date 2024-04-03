@@ -3,5 +3,6 @@
 This mod adds the following settings and features:
 
 - Removes lock hint above icon kit
-- Adds creator button
-- Adds demons in garage (compatible with demons in garage mod)
+- Creator button
+- Demons in garage (compatible with demons in garage mod)
+- Creator Points in garage (click the icon to refresh)
