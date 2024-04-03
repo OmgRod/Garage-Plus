@@ -1,8 +1,8 @@
 # v1.2.0
 
-- Added "Mod Options" setting (requires "Remove Lock Hint" setting enabled).
-- Added Mod Settings button
-- Added Feedback button
+- Added top buttons setting
+- Added mod settings shortcut (top button)
+- Added feedback button (doesn't work yet + top button)
 
 # v1.1.0
 
