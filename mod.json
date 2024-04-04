@@ -10,7 +10,6 @@
 	"resources": {
 		"sprites": [
 			"resources/GaragePlus_creatorBtn.png",
-			"resources/GaragePlus_cpIcon.png",
 			"resources/GaragePlus_settingsBtn.png",
 			"resources/GaragePlus_feedbackBtn.png"
 		]

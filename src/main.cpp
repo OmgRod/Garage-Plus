@@ -2,6 +2,7 @@
 #include <Geode/modify/GJGarageLayer.hpp>
 #include <Geode/utils/web.hpp>
 #include <Geode/ui/GeodeUI.hpp>
+#include <Geode/binding/ButtonSprite.hpp>
 
 using namespace geode::prelude;
 
@@ -48,14 +49,14 @@ public:
 
 		auto corner1 = CCSprite::createWithSpriteFrameName("GJ_sideArt_001.png");
 
-		corner1->setPosition(CCPoint::CCPoint(CCSize(-287.f,-90.f)));
-        corner1->setAnchorPoint(CCPoint::CCPoint(CCSize(0,1)));
+		corner1->setPosition(CCPoint::CCPoint(CCSize(winSize.width * -0.5, winSize.height * -0.5)));
+        corner1->setAnchorPoint(CCPoint::CCPoint(CCSize(0,0)));
         menu->addChild(corner1);
 
 		auto corner2 = CCSprite::createWithSpriteFrameName("GJ_sideArt_001.png");
 
-		corner2->setPosition(CCPoint::CCPoint(CCSize(212.f,-90.f)));
-        corner2->setAnchorPoint(CCPoint::CCPoint(CCSize(0,1)));
+		corner2->setPosition(CCPoint::CCPoint(CCSize(winSize.width * 0.5, winSize.height * -0.5)));
+        corner2->setAnchorPoint(CCPoint::CCPoint(CCSize(1,0)));
 		corner2->setFlipX(true);
         menu->addChild(corner2);
 
@@ -65,6 +66,12 @@ public:
         gameBgSpr->setPositionY(winSize.height / -2);
         menu->addChild(gameBgSpr);
 
+        auto squareSpr = CCScale9Sprite::create("GJ_square01.png");
+        squareSpr->setPosition(CCPoint(winSize.width * 0, winSize.height * 0));
+        squareSpr->setContentSize(CCPoint(winSize.width * 0.8, winSize.height * 0.8));
+        squareSpr->setZOrder(1);
+        menu->addChild(squareSpr);
+
         auto btn = CCMenuItemSpriteExtra::create(
             CCSprite::createWithSpriteFrameName("GJ_arrow_01_001.png"),
             this,
@@ -72,6 +79,32 @@ public:
         );
         btn->setPosition(winSize.width * -0.45, winSize.height * 0.4);
         menu->addChild(btn);
+
+        auto title = CCLabelBMFont::create("Feedback", "goldFont.fnt");
+        title->setZOrder(1);
+        title->setPositionY(winSize.width * 0.185);
+        menu->addChild(title);
+
+        auto descBg = CCScale9Sprite::create("square02b_001.png");
+        descBg->setPosition(CCPoint(winSize.width * 0.5, winSize.height * 0.5));
+        descBg->setContentSize(CCPoint(winSize.width * 0.6, winSize.height * 0.5));
+        descBg->setZOrder(1);
+        descBg->setColor(ccColor3B(0, 0, 0));
+        descBg->setOpacity(60);
+        this->addChild(descBg);
+
+        auto descInput = CCTextInputNode::create(winSize.width * 0.6, winSize.height * 0.5, "Type your feedback or feature request here...", "chatFont.fnt");
+        descInput->setPosition(CCPoint(winSize.width * 0.5, winSize.height * 0.5));
+        descInput->setZOrder(2);
+        this->addChild(descInput);
+
+        auto submitSpr = ButtonSprite::create("Submit");
+        auto submitBtn = CCMenuItemSpriteExtra::create(
+            submitSpr, this, menu_selector(GPFeedbackLayer::onClick)
+        );
+        submitBtn->setPosition(CCPoint(winSize.width * 0, winSize.height * -0.325));
+        submitBtn->setZOrder(1);
+        menu->addChild(submitBtn);
 
         this->addChild(menu);
 
