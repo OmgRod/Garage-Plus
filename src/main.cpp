@@ -59,13 +59,18 @@ public:
 		corner2->setFlipX(true);
         menu->addChild(corner2);
 
+        auto gameBgSpr = CCSprite::create("game_bg_01_001.png");
+        gameBgSpr->setScale(2.f);
+        gameBgSpr->setZOrder(-1);
+        gameBgSpr->setPositionY(winSize.height / -2);
+        menu->addChild(gameBgSpr);
+
         auto btn = CCMenuItemSpriteExtra::create(
             CCSprite::createWithSpriteFrameName("GJ_arrow_01_001.png"),
             this,
             menu_selector(GPFeedbackLayer::onClick)
         );
-        btn->setPosition(winSize.width * 0.1, winSize.height * 0.1);
-        btn->setAnchorPoint(CCPoint::CCPoint(CCSize(0,1)));
+        btn->setPosition(winSize.width * -0.45, winSize.height * 0.4);
         menu->addChild(btn);
 
         this->addChild(menu);
