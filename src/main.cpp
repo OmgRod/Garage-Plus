@@ -5,6 +5,81 @@
 
 using namespace geode::prelude;
 
+class GPFeedbackLayer : public CCLayer
+{
+public:
+
+    static CCScene* scene()
+    {
+        auto scene = CCScene::create();
+        scene->addChild(GPFeedbackLayer::create());
+        return scene;
+    }
+
+    static CCScene* garageScene()
+    {
+        auto scene = CCScene::create();
+        scene->addChild(GJGarageLayer::node());
+        return scene;
+    }
+    
+    static GPFeedbackLayer* create()
+    {
+        GPFeedbackLayer* ret = new GPFeedbackLayer();
+        if(ret && ret->init())
+        {
+            ret->autorelease();
+            return ret;
+        }
+        delete ret;
+        return nullptr;
+    }
+    
+    size_t m_clicked = 0;
+
+    bool init()
+    {
+        if (!CCLayer::init())
+            return false;
+
+        auto winSize = CCDirector::sharedDirector()->getWinSize();
+
+        auto menu = CCMenu::create();
+
+		auto corner1 = CCSprite::createWithSpriteFrameName("GJ_sideArt_001.png");
+
+		corner1->setPosition(CCPoint::CCPoint(CCSize(-287.f,-90.f)));
+        corner1->setAnchorPoint(CCPoint::CCPoint(CCSize(0,1)));
+        menu->addChild(corner1);
+
+		auto corner2 = CCSprite::createWithSpriteFrameName("GJ_sideArt_001.png");
+
+		corner2->setPosition(CCPoint::CCPoint(CCSize(212.f,-90.f)));
+        corner2->setAnchorPoint(CCPoint::CCPoint(CCSize(0,1)));
+		corner2->setFlipX(true);
+        menu->addChild(corner2);
+
+        auto btn = CCMenuItemSpriteExtra::create(
+            CCSprite::createWithSpriteFrameName("GJ_arrow_01_001.png"),
+            this,
+            menu_selector(GPFeedbackLayer::onClick)
+        );
+        btn->setPosition(winSize.width * 0.1, winSize.height * 0.1);
+        btn->setAnchorPoint(CCPoint::CCPoint(CCSize(0,1)));
+        menu->addChild(btn);
+
+        this->addChild(menu);
+
+        return true;
+    }
+
+    void onClick(CCObject* sender)
+    {
+        auto scenePrev = CCTransitionFade::create(0.5f, GPFeedbackLayer::garageScene());
+        CCDirector::sharedDirector()->replaceScene(scenePrev);
+    }
+};
+
 class MyLayer : public CCLayer
 {
 public:
@@ -49,7 +124,8 @@ public:
 
     void onFeedbackBtn(CCObject* sender)
     {
-        FLAlertLayer::create("Garage Plus", "This feature is coming soon!", "OK")->show();
+        auto scenePrev = CCTransitionFade::create(0.5f, GPFeedbackLayer::scene());
+        CCDirector::sharedDirector()->replaceScene(scenePrev);
     }
 };
 

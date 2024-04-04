@@ -1,3 +1,7 @@
+# v1.2.2
+
+- Added feedback/request menu
+
 # v1.2.1
 
 - Added mod logo
