@@ -3,8 +3,6 @@
 #include <Geode/utils/web.hpp>
 #include <Geode/ui/GeodeUI.hpp>
 #include <Geode/binding/ButtonSprite.hpp>
-#include <iostream>
-#include <string>
 
 using namespace geode::prelude;
 
