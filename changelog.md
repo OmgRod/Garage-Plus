@@ -1,3 +1,8 @@
+# v1.2.3
+
+- Small optimisations
+- Removed support for MacOS and Android64 (they are unusable)
+
 # v1.2.2
 
 - Added feedback/request menu
