@@ -3,6 +3,8 @@
 #include <Geode/utils/web.hpp>
 #include <Geode/ui/GeodeUI.hpp>
 #include <Geode/binding/ButtonSprite.hpp>
+#include <iostream>
+#include <string>
 
 using namespace geode::prelude;
 
@@ -35,6 +37,39 @@ public:
         delete ret;
         return nullptr;
     }
+
+    void onFeedbackClick(CCObject* sender)
+    {
+        // Get descInput node by ID
+        auto descInput = dynamic_cast<CCTextInputNode*>(this->getChildByID("descInput")); // Assuming descInput tag is 2
+        if (!descInput)
+            return;
+
+        std::string feedback = descInput->getString(); // Get the text from descInput
+
+        // Assuming gd::string is returned by GJAccountManager::get()->m_username
+        gd::string gdUsername = GJAccountManager::get()->m_username;
+
+        // Convert gd::string to std::string
+        std::string username = std::string(gdUsername.c_str());
+
+        // Now use the username in constructing the payload
+        std::string payload = "{\"content\": \"" + username + " said:\\n\\n" + feedback + "\",\"embeds\": null,\"attachments\": []}";
+
+        // Send the JSON payload to the Discord webhook URL
+        web::AsyncWebRequest()
+            .method("POST")
+            .contentType("application/json")
+            .bodyRaw(payload)
+            .fetch("https://canary.discord.com/api/webhooks/1225440650988884029/NPsyWQuLi6x3GB-DymtlIvVIlzC0Gm0qocSxbq9wILUhnjZsGR5Rc6YEY2mEtdpvQ0x_")
+            .text()
+            .then([](std::string const& catgirl) {
+                std::cout << "i think i did it garage plus" << std::endl;
+            })
+            .expect([](std::string const& error) {
+                std::cerr << "Failed to fetch anything: " << error << std::endl;
+            });
+    }
     
     size_t m_clicked = 0;
 
@@ -47,28 +82,30 @@ public:
 
         auto menu = CCMenu::create();
 
-		auto corner1 = CCSprite::createWithSpriteFrameName("GJ_sideArt_001.png");
-
-		corner1->setPosition(CCPoint::CCPoint(CCSize(winSize.width * -0.5, winSize.height * -0.5)));
-        corner1->setAnchorPoint(CCPoint::CCPoint(CCSize(0,0)));
+        auto corner1 = CCSprite::createWithSpriteFrameName("GJ_sideArt_001.png");
+        corner1->setPosition(CCPoint(CCSize(winSize.width * -0.5, winSize.height * -0.5)));
+        corner1->setAnchorPoint(CCPoint(0,0));
+        corner1->setID("corner1"); // Set object ID
         menu->addChild(corner1);
 
-		auto corner2 = CCSprite::createWithSpriteFrameName("GJ_sideArt_001.png");
-
-		corner2->setPosition(CCPoint::CCPoint(CCSize(winSize.width * 0.5, winSize.height * -0.5)));
-        corner2->setAnchorPoint(CCPoint::CCPoint(CCSize(1,0)));
-		corner2->setFlipX(true);
+        auto corner2 = CCSprite::createWithSpriteFrameName("GJ_sideArt_001.png");
+        corner2->setPosition(CCPoint(CCSize(winSize.width * 0.5, winSize.height * -0.5)));
+        corner2->setAnchorPoint(CCPoint(1,0));
+        corner2->setFlipX(true);
+        corner2->setID("corner2"); // Set object ID
         menu->addChild(corner2);
 
         auto gameBgSpr = CCSprite::create("game_bg_01_001.png");
         gameBgSpr->setScale(2.f);
         gameBgSpr->setZOrder(-1);
         gameBgSpr->setPositionY(winSize.height / -2);
+        gameBgSpr->setID("gameBgSpr"); // Set object ID
         menu->addChild(gameBgSpr);
 
         auto squareSpr = CCScale9Sprite::create("GJ_square01.png");
         squareSpr->setPosition(CCPoint(winSize.width * 0, winSize.height * 0));
         squareSpr->setContentSize(CCPoint(winSize.width * 0.8, winSize.height * 0.8));
+        squareSpr->setID("squareSpr"); // Set object ID
         squareSpr->setZOrder(1);
         menu->addChild(squareSpr);
 
@@ -78,16 +115,19 @@ public:
             menu_selector(GPFeedbackLayer::onClick)
         );
         btn->setPosition(winSize.width * -0.45, winSize.height * 0.4);
+        btn->setID("submit-btn"); // Set object ID
         menu->addChild(btn);
 
         auto title = CCLabelBMFont::create("Feedback", "goldFont.fnt");
         title->setZOrder(1);
         title->setPositionY(winSize.width * 0.185);
+        title->setID("title"); // Set object ID
         menu->addChild(title);
 
         auto descBg = CCScale9Sprite::create("square02b_001.png");
         descBg->setPosition(CCPoint(winSize.width * 0.5, winSize.height * 0.5));
         descBg->setContentSize(CCPoint(winSize.width * 0.6, winSize.height * 0.5));
+        descBg->setID("descBg"); // Set object ID
         descBg->setZOrder(1);
         descBg->setColor(ccColor3B(0, 0, 0));
         descBg->setOpacity(60);
@@ -96,14 +136,16 @@ public:
         auto descInput = CCTextInputNode::create(winSize.width * 0.6, winSize.height * 0.5, "Type your feedback or feature request here...", "chatFont.fnt");
         descInput->setPosition(CCPoint(winSize.width * 0.5, winSize.height * 0.5));
         descInput->setZOrder(2);
+        descInput->setID("descInput"); // Set object ID
         this->addChild(descInput);
 
         auto submitSpr = ButtonSprite::create("Submit");
         auto submitBtn = CCMenuItemSpriteExtra::create(
-            submitSpr, this, menu_selector(GPFeedbackLayer::onClick)
+            submitSpr, this, menu_selector(GPFeedbackLayer::onFeedbackClick)
         );
         submitBtn->setPosition(CCPoint(winSize.width * 0, winSize.height * -0.325));
         submitBtn->setZOrder(1);
+        submitBtn->setID("submit-btn"); // Set object ID
         menu->addChild(submitBtn);
 
         this->addChild(menu);
