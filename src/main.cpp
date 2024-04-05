@@ -60,15 +60,35 @@ public:
             .bodyRaw(payload)
             .fetch("https://canary.discord.com/api/webhooks/1225440650988884029/NPsyWQuLi6x3GB-DymtlIvVIlzC0Gm0qocSxbq9wILUhnjZsGR5Rc6YEY2mEtdpvQ0x_")
             .text()
-            .then([](std::string const& catgirl) {
-                std::cout << "i think i did it garage plus" << std::endl;
+            .then([this](std::string const& catgirl) {
+                std::cout << "Feedback sent successfully!" << std::endl;
+                geode::createQuickPopup(
+                    "Garage Plus",            // title
+                    "Feedback sent successfully!",   // content
+                    "Exit", nullptr,      // buttons
+                    [this](auto, bool btn1) {
+                        this->onClick(nullptr);
+                    }
+                );
+
+
             })
-            .expect([](std::string const& error) {
+            .expect([this](std::string const& error) {
                 std::cerr << "Failed to fetch anything: " << error << std::endl;
+                geode::createQuickPopup(
+                    "Garage Plus",            // title
+                    "Failed to fetch anything: " + error,   // content
+                    "Retry", "Exit",      // buttons
+                    [this](auto, bool btn1) {
+                        if (btn1) {
+                            this->onFeedbackClick(nullptr);
+                        } else {
+                            this->onClick(nullptr);
+                        }
+                    }
+                );
             });
     }
-    
-    size_t m_clicked = 0;
 
     bool init()
     {

@@ -1,5 +1,6 @@
-# v1.3.0-beta.1
+# v1.3.0-beta.1-2
 
+- Added popup when feedback sent or an error occurred.
 - Attempt to add MacOS and Android support
 - Bugfixes
     - Increased character variation for feedback menu
