@@ -1,3 +1,9 @@
+# v1.3.0-beta.1
+
+- Attempt to add MacOS and Android support
+- Bugfixes
+    - Increased character variation for feedback menu
+
 # v1.2.3
 
 - Small optimisations

@@ -2,7 +2,6 @@
 #include <Geode/modify/GJGarageLayer.hpp>
 #include <Geode/utils/web.hpp>
 #include <Geode/ui/GeodeUI.hpp>
-#include <Geode/binding/ButtonSprite.hpp>
 
 using namespace geode::prelude;
 
@@ -113,7 +112,7 @@ public:
             menu_selector(GPFeedbackLayer::onClick)
         );
         btn->setPosition(winSize.width * -0.45, winSize.height * 0.4);
-        btn->setID("submit-btn"); // Set object ID
+        btn->setID("back-btn"); // Set object ID
         menu->addChild(btn);
 
         auto title = CCLabelBMFont::create("Feedback", "goldFont.fnt");
@@ -135,7 +134,10 @@ public:
         descInput->setPosition(CCPoint(winSize.width * 0.5, winSize.height * 0.5));
         descInput->setZOrder(2);
         descInput->setID("descInput"); // Set object ID
+        descInput->setAllowedChars(" !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~"); // Allow all ASCII characters
+        descInput->setMaxLabelWidth(winSize.width * 0.6); // Maximum width for text input
         this->addChild(descInput);
+
 
         auto submitSpr = ButtonSprite::create("Submit");
         auto submitBtn = CCMenuItemSpriteExtra::create(
