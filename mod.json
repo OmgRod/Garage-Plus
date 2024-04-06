@@ -1,6 +1,6 @@
 {
 	"geode": "2.0.0-beta.23",
-	"version": "v1.3.0-beta.3",
+	"version": "v1.3.0",
 	"gd": {
 		"android32": "2.205",
 		"win": "2.204"
@@ -9,7 +9,8 @@
 		"sprites": [
 			"resources/GaragePlus_creatorBtn.png",
 			"resources/GaragePlus_settingsBtn.png",
-			"resources/GaragePlus_feedbackBtn.png"
+			"resources/GaragePlus_feedbackBtn.png",
+			"resources/GaragePlus_profileBtn.png"
 		]
 	},
 	"settings": {
@@ -28,12 +29,6 @@
 		"no-lock-hint": {
             "name": "Remove Lock Hint",
             "description": "Removes the \"Tap lock icon for more info!\" text.",
-            "type": "bool",
-            "default": true
-        },
-		"creator-btn-enabled": {
-            "name": "Enable Creator Button",
-            "description": "Add a creator button under the shards and color.",
             "type": "bool",
             "default": true
         },

@@ -1,7 +1,8 @@
-# v1.3.0-beta.1-2
+# v1.3.0
 
 - Added popup when feedback sent or an error occurred.
-- Attempt to add MacOS and Android support
+- Removed creator button setting and placed button on top bar.
+- Added profile button to top bar.
 - Bugfixes
     - Increased character variation for feedback menu
 

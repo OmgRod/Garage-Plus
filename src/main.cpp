@@ -238,7 +238,6 @@ class $modify(GJGarageLayer) {
 		auto demons = Mod::get()->getSettingValue<bool>("demons");
 		auto cp = Mod::get()->getSettingValue<bool>("cp");
 		auto tapLockHint = Mod::get()->getSettingValue<bool>("no-lock-hint");
-		auto creatorBtnEnabled = Mod::get()->getSettingValue<bool>("creator-btn-enabled");
         auto topBtns = Mod::get()->getSettingValue<bool>("top-buttons");
 
 		if (demons) {
@@ -367,6 +366,19 @@ class $modify(GJGarageLayer) {
                 feedbackBtn->setPositionX(winSize.width / 12);
                 buttonsMenu->addChild(feedbackBtn);
 
+                auto playBtnBtnSpr = CCSprite::create("GaragePlus_creatorBtn.png"_spr);
+                auto playBtnBtn = CCMenuItemSpriteExtra::create(
+                    playBtnBtnSpr, this, menu_selector(MyLayer::onClick)
+                );
+                playBtnBtn->setPositionX(winSize.width / 12 * 2);
+                buttonsMenu->addChild(playBtnBtn);
+
+                auto profileIcon = CCSprite::create("GaragePlus_profileBtn.png"_spr);
+                auto profileBtn = CCMenuItemSpriteExtra::create(profileIcon, this, menu_selector(MenuLayer::onMyProfile));
+                profileBtn->setID("profile");
+                profileBtn->setPositionX(winSize.width / 12 * 3);
+                buttonsMenu->addChild(profileBtn);
+
                 // auto feedbackIcon = CCSprite::create("GaragePlus_feedbackBtn.png"_spr);
                 // auto feedbackBtn = CCMenuItemSpriteExtra::create(feedbackIcon, this, menu_selector(MyLayer::onFeedbackBtn));
                 // feedbackBtn->setID("feedback");
@@ -375,17 +387,6 @@ class $modify(GJGarageLayer) {
 
                 buttonsMenu->updateLayout();
             }
-		}
-
-		if (creatorBtnEnabled) {
-			auto shards = this->getChildByID("shards-menu");
-
-			auto playBtnBtnSpr = CCSprite::create("GaragePlus_creatorBtn.png"_spr);
-			auto playBtnBtn = CCMenuItemSpriteExtra::create(
-				playBtnBtnSpr, this, menu_selector(MyLayer::onClick)
-			);
-			shards->addChild(playBtnBtn);
-			shards->updateLayout();
 		}
 
 		return true;
