@@ -10,7 +10,8 @@
 			"resources/GaragePlus_creatorBtn.png",
 			"resources/GaragePlus_settingsBtn.png",
 			"resources/GaragePlus_feedbackBtn.png",
-			"resources/GaragePlus_profileBtn.png"
+			"resources/GaragePlus_profileBtn.png",
+			"about-assets/modprev.png"
 		]
 	},
 	"settings": {
@@ -24,7 +25,7 @@
             "name": "Creator Points",
             "description": "Creator Points show up in the garage. Click the CP icon to refresh.",
             "type": "bool",
-            "default": true
+            "default": false
         },
 		"no-lock-hint": {
             "name": "Remove Lock Hint",

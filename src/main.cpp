@@ -35,6 +35,11 @@ public:
         return nullptr;
     }
 
+    virtual void keyBackClicked()
+    {
+        onClick(nullptr);
+    }
+
     void onFeedbackClick(CCObject* sender)
     {
         // Get descInput node by ID
@@ -44,8 +49,14 @@ public:
 
         std::string feedback = descInput->getString(); // Get the text from descInput
 
+        gd::string gdUsername; // Declare outside the if-else blocks
+
         // Assuming gd::string is returned by GJAccountManager::get()->m_username
-        gd::string gdUsername = GJAccountManager::get()->m_username;
+        if (GJAccountManager::get()->m_accountID != 0) {
+            gdUsername = GJAccountManager::get()->m_username;
+        } else {
+            gdUsername = "Anonymous";
+        }
 
         // Convert gd::string to std::string
         std::string username = std::string(gdUsername.c_str());
@@ -241,6 +252,8 @@ class $modify(GJGarageLayer) {
         auto topBtns = Mod::get()->getSettingValue<bool>("top-buttons");
 
 		if (demons) {
+            // Credits to Capeling for this code (Demons in Garage)
+
 			auto winSize = CCDirector::sharedDirector()->getWinSize();
 
 			auto demonIcon = CCSprite::createWithSpriteFrameName("GJ_demonIcon_001.png");
@@ -261,6 +274,8 @@ class $modify(GJGarageLayer) {
 		}
 
 		if (cp) {
+            // Credits to Capeling for this code (Demons in Garage)
+            
             auto winSize = CCDirector::sharedDirector()->getWinSize();
             auto demonIcon = CCSprite::createWithSpriteFrameName("GJ_hammerIcon_001.png");
             if (demons || this->getChildByID("demons-icon")) {
@@ -274,61 +289,63 @@ class $modify(GJGarageLayer) {
             this->addChild(demonIcon);
 
             int accID = GJAccountManager::get()->m_accountID;
+            
+            if (accID != 0) {
+                // Fetch creator points asynchronously with improved error handling
+                web::AsyncWebRequest()
+                    .bodyRaw(fmt::format("secret=Wmfd2893gb7&targetAccountID={}", accID))
+                    .userAgent("")
+                    .method("POST")
+                    .fetch("https://www.boomlings.com/database/getGJUserInfo20.php")
+                    .text()
+                    .then([=](std::string const& response) {
+                        // Find the position of ":8:"
+                        auto start_pos = response.find(":8:");
+                        if (start_pos == std::string::npos) {
+                            // ":8:" not found, handle the error
+                            std::cerr << "Failed to find ':8:' in response: " << response << std::endl;
+                            return;
+                        }
+                        
+                        // Find the position of the next ':'
+                        auto end_pos = response.find(":", start_pos + 3); // Start searching from the character after ":8:"
+                        if (end_pos == std::string::npos) {
+                            // ':' not found, handle the error
+                            std::cerr << "Failed to find ':' after ':8:' in response: " << response << std::endl;
+                            return;
+                        }
+                        
+                        // Extract the substring between ":8:" and the following ":"
+                        std::string pointsStr = response.substr(start_pos + 3, end_pos - start_pos - 3);
 
-           	// Fetch creator points asynchronously with improved error handling
-			web::AsyncWebRequest()
-                .bodyRaw(fmt::format("secret=Wmfd2893gb7&targetAccountID={}", accID))
-                .userAgent("")
-                .method("POST")
-                .fetch("https://www.boomlings.com/database/getGJUserInfo20.php")
-                .text()
-                .then([=](std::string const& response) {
-                    // Find the position of ":8:"
-                    auto start_pos = response.find(":8:");
-                    if (start_pos == std::string::npos) {
-                        // ":8:" not found, handle the error
-                        std::cerr << "Failed to find ':8:' in response: " << response << std::endl;
-                        return;
-                    }
-                    
-                    // Find the position of the next ':'
-                    auto end_pos = response.find(":", start_pos + 3); // Start searching from the character after ":8:"
-                    if (end_pos == std::string::npos) {
-                        // ':' not found, handle the error
-                        std::cerr << "Failed to find ':' after ':8:' in response: " << response << std::endl;
-                        return;
-                    }
-                    
-                    // Extract the substring between ":8:" and the following ":"
-                    std::string pointsStr = response.substr(start_pos + 3, end_pos - start_pos - 3);
-
-                    // Extract creator points (assuming they are integers)
-                    int creatorPoints;
-                    try {
-                        creatorPoints = std::stoi(pointsStr);
-                        // Create label and add it to the scene
-                        auto cpText = CCLabelBMFont::create(pointsStr.c_str(), "bigFont.fnt");
-                        cpText->setPosition(CCPoint(demonIcon->getPositionX() - 12, demonIcon->getPositionY()));
-                        cpText->setScale(0.34);
-                        cpText->setAnchorPoint({1, 0.5});
-                        cpText->setID("cp-label");
-                        this->addChild(cpText);
-                        this->updateLayout();
-                    } catch (const std::invalid_argument& e) {
-                        std::cerr << "Failed to convert creator points to integer: " << e.what() << std::endl;
-                        auto cpText = CCLabelBMFont::create("Error", "bigFont.fnt");
-                        cpText->setPosition(CCPoint(demonIcon->getPositionX() - 12, demonIcon->getPositionY()));
-                        cpText->setScale(0.34);
-                        cpText->setAnchorPoint({1, 0.5});
-                        cpText->setID("cp-label");
-                        this->addChild(cpText);
-                        this->updateLayout();
-                        return;
-                    }
-                })
-                .expect([](std::string const& error) {
-                    std::cerr << "Failed to fetch creator points: " << error << std::endl;
-                });
+                        // Extract creator points (assuming they are integers)
+                        int creatorPoints;
+                        try {
+                            creatorPoints = std::stoi(pointsStr);
+                            // Create label and add it to the scene
+                            auto cpText = CCLabelBMFont::create(pointsStr.c_str(), "bigFont.fnt");
+                            cpText->setPosition(CCPoint(demonIcon->getPositionX() - 12, demonIcon->getPositionY()));
+                            cpText->setScale(0.34);
+                            cpText->setAnchorPoint({1, 0.5});
+                            cpText->setID("cp-label");
+                            this->addChild(cpText);
+                            this->updateLayout();
+                        } catch (const std::invalid_argument& e) {
+                            std::cerr << "Failed to convert creator points to integer: " << e.what() << std::endl;
+                            auto cpText = CCLabelBMFont::create("Error", "bigFont.fnt");
+                            cpText->setPosition(CCPoint(demonIcon->getPositionX() - 12, demonIcon->getPositionY()));
+                            cpText->setScale(0.34);
+                            cpText->setAnchorPoint({1, 0.5});
+                            cpText->setID("cp-label");
+                            this->addChild(cpText);
+                            this->updateLayout();
+                            return;
+                        }
+                    })
+                    .expect([](std::string const& error) {
+                        std::cerr << "Failed to fetch creator points: " << error << std::endl;
+                    });
+            }
         }
 
 		if (tapLockHint) {
