@@ -32,6 +32,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # Add the new step to update Geode SDK nightly
+      - name: Update Geode SDK to nightly
+        run: geode sdk update nightly
+
       - name: Build the mod
         uses: geode-sdk/build-geode-mod@main
         with:
