@@ -17,7 +17,9 @@ else()
     message(STATUS "Found Geode: $ENV{GEODE_SDK}")
 endif()
 
+set(GEODE_LINK_NIGHTLY ON)
+
 add_subdirectory($ENV{GEODE_SDK} ${CMAKE_CURRENT_BINARY_DIR}/geode)
 
 # Set up dependencies, resources, link Geode
-setup_geode_mod(${PROJECT_NAME} EXTERNALS geode.node-ids:1.8.1)
+setup_geode_mod(${PROJECT_NAME} EXTERNALS geode.node-ids:1.11.0)
