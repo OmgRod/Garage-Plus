@@ -1,3 +1,9 @@
+# v1.4.0
+
+Warning: At the time of releasing this, Geode isn't out for 2.206. If you don't want to download the 2.206 version, download the 2.204 version. Otherwise, download Geode for 2.206 at https://github.com/geode-sdk/geode/releases/nightly
+
+- Added 2.206 support
+
 # v1.3.0
 
 - Added popup when feedback sent or an error occurred.
