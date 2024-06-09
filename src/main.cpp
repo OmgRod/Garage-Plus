@@ -262,8 +262,9 @@ class $modify(GJGarageLayer) {
 
 		if (cp) {
             // Credits to Capeling for this code (Demons in Garage)
-            
+
             auto winSize = CCDirector::sharedDirector()->getWinSize();
+
             auto demonIcon = CCSprite::createWithSpriteFrameName("GJ_hammerIcon_001.png");
             if (demons || this->getChildByID("demons-icon")) {
                 demonIcon->setPosition({winSize.width - 18, winSize.height - 132});
@@ -276,71 +277,61 @@ class $modify(GJGarageLayer) {
             this->addChild(demonIcon);
 
             int accID = GJAccountManager::get()->m_accountID;
-            
+
             if (accID != 0) {
-                // Fetch creator points asynchronously with improved error handling
+                std::shared_ptr<std::string> pointsStr = std::make_shared<std::string>();
+
+                // Create the web request
                 web::WebRequest request;
+                request.bodyString(fmt::format("secret=Wmfd2893gb7&targetAccountID={}", accID));
+                request.userAgent(""); // Optionally set a user agent
 
-        // Setup the request
-        request.bodyString(fmt::format("secret=Wmfd2893gb7&targetAccountID={}", accID));
-        request.userAgent(""); // Optionally set a user agent
-        request.header("Content-Type", "application/x-www-form-urlencoded"); // Assuming the content type
-        // request.timeout(30); // Set a timeout duration in seconds
+                std::string url = "https://www.boomlings.com/database/getGJUserInfo20.php";
 
-        // Define the URL
-        std::string url = "https://www.boomlings.com/database/getGJUserInfo20.php";
-
-        auto cpText = CCLabelBMFont::create("", "bigFont.fnt"); // Create label with an empty string for now
-float demonIconPosX = demonIcon->getPositionX(); // Capture demonIcon's position X
-float demonIconPosY = demonIcon->getPositionY(); // Capture demonIcon's position Y
-
-std::string pointsStr; // Declare pointsStr here
-
-m_fields->m_listener.bind([this, demonIconPosX, demonIconPosY, &pointsStr,  cpText](web::WebTask::Event* e) {
-    if (web::WebResponse* res = e->getValue()) {
-        if (res->ok()) {
-            std::string responseBody = res->string().unwrap();
-            // Process the response
-            auto start_pos = responseBody.find(":8:");
-            if (start_pos != std::string::npos) {
-                auto end_pos = responseBody.find(":", start_pos + 3);
-                if (end_pos != std::string::npos) {
-                    pointsStr = responseBody.substr(start_pos + 3, end_pos - start_pos - 3); // Update pointsStr
-                    try {
-                        int creatorPoints = std::stoi(pointsStr);
-                        // Update label with pointsStr
-                        cpText->setString(pointsStr.c_str());
-                        cpText->setPosition(CCPoint(demonIconPosX - 12, demonIconPosY));
-                        cpText->setScale(0.34);
-                        cpText->setAnchorPoint({1, 0.5});
-                        cpText->setID("cp-label");
-                        this->addChild(cpText);
-                        this->updateLayout();
-                    } catch (const std::invalid_argument& e) {
-                        std::cerr << "Failed to convert creator points to integer: " << e.what() << std::endl;
-                        // Handle error
+                m_fields->m_listener.bind([this, demonIcon, pointsStr, demons](web::WebTask::Event* e) {
+                    if (web::WebResponse* res = e->getValue()) {
+                        if (res->ok()) {
+                            std::string responseBody = res->string().unwrap();
+                            auto start_pos = responseBody.find(":8:");
+                            if (start_pos != std::string::npos) {
+                                auto end_pos = responseBody.find(":", start_pos + 3);
+                                if (end_pos != std::string::npos) {
+                                    *pointsStr = responseBody.substr(start_pos + 3, end_pos - start_pos - 3);
+                                    try {
+                                        int creatorPoints = std::stoi(*pointsStr);
+                                        // Update label with pointsStr
+                                        auto cpText = CCLabelBMFont::create(pointsStr->c_str(), "bigFont.fnt");
+                                        if (demons) {
+                                            cpText->setPosition(CCPoint(demonIcon->getPositionX() - 12, this->getChildByID("diamond-shards-label")->getPositionY() - 30));
+                                        } else {
+                                            cpText->setPosition(CCPoint(demonIcon->getPositionX() - 12, this->getChildByID("diamond-shards-label")->getPositionY() - 15));
+                                        }
+                                        cpText->setScale(0.34);
+                                        cpText->setAnchorPoint({1, 0.5});
+                                        cpText->setID("cp-label");
+                                        this->addChild(cpText);
+                                        this->updateLayout();
+                                    } catch (const std::invalid_argument& e) {
+                                        std::cerr << "Failed to convert creator points to integer: " << e.what() << std::endl;
+                                    }
+                                } else {
+                                    std::cerr << "Failed to find ':' after ':8:' in response: " << responseBody << std::endl;
+                                }
+                            } else {
+                                std::cerr << "Failed to find ':8:' in response: " << responseBody << std::endl;
+                            }
+                        } else {
+                            std::cerr << "Request failed with status code: " << res->code() << std::endl;
+                        }
+                    } else if (web::WebProgress* progress = e->getProgress()) {
+                        // Optionally handle progress updates
+                    } else if (e->isCancelled()) {
+                        std::cerr << "The request was cancelled... So sad :(" << std::endl;
                     }
-                } else {
-                    std::cerr << "Failed to find ':' after ':8:' in response: " << responseBody << std::endl;
-                    // Handle error
-                }
-            } else {
-                std::cerr << "Failed to find ':8:' in response: " << responseBody << std::endl;
-                // Handle error
-            }
-        } else {
-            std::cerr << "Request failed with status code: " << res->code() << std::endl;
-            // Handle error
-        }
-    } else if (web::WebProgress* progress = e->getProgress()) {
-        // std::cout << "Request in progress: " << progress->downloadProgress() << std::endl;
-    } else if (e->isCancelled()) {
-        std::cerr << "The request was cancelled... So sad :(" << std::endl;
-    }
-});
+                });
 
-        // Set the filter to the request task
-        m_fields->m_listener.setFilter(request.post(url));
+                // Send the POST request
+                m_fields->m_listener.setFilter(request.post(url));
             }
         }
 
