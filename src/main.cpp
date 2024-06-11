@@ -181,7 +181,7 @@ public:
     static CCScene* scene()
     {
         auto scene = CCScene::create();
-        scene->addChild(CreatorLayer::create());
+        scene->addChild(CreatorLayer::scene());
         return scene;
     }
 
@@ -220,6 +220,22 @@ public:
     {
         auto scenePrev = CCTransitionFade::create(0.5f, GPFeedbackLayer::scene());
         CCDirector::sharedDirector()->replaceScene(scenePrev);
+        // FLAlertLayer::create("Garage Plus", "This feature may or may not be coming soon", "OK")->show();
+    }
+
+    void demonInfo(CCObject* sender)
+    {
+        FLAlertLayer::create("Garage Plus", "This feature may or may not be coming soon", "OK")->show();
+    }
+
+    void starsInfo(CCObject* sender)
+    {
+        FLAlertLayer::create("Garage Plus", "This feature may or may not be coming soon", "OK")->show();
+    }
+
+    void moonsInfo(CCObject* sender)
+    {
+        FLAlertLayer::create("Garage Plus", "This feature may or may not be coming soon", "OK")->show();
     }
 };
 
@@ -237,103 +253,155 @@ class $modify(GJGarageLayer) {
 		auto cp = Mod::get()->getSettingValue<bool>("cp");
 		auto tapLockHint = Mod::get()->getSettingValue<bool>("no-lock-hint");
         auto topBtns = Mod::get()->getSettingValue<bool>("top-buttons");
+        auto advStats = Mod::get()->getSettingValue<bool>("advanced-stats");
 
 		if (demons) {
             // Credits to Capeling for this code (Demons in Garage)
 
 			auto winSize = CCDirector::sharedDirector()->getWinSize();
 
-			auto demonIcon = CCSprite::createWithSpriteFrameName("GJ_demonIcon_001.png");
-			demonIcon->setPosition({winSize.width - 18, winSize.height - 117});
-			demonIcon->setAnchorPoint({0.5, 0.5});
-			demonIcon->setScale(0.5);
-			demonIcon->setID("demons-icon");
+            auto demonIcon = CCSprite::create("GaragePlus_demonIcon.png"_spr);
 
-			CCDictionary* stats = GameStatsManager::sharedState()->m_playerStats;
-			CCLabelBMFont* demonText = CCLabelBMFont::create(std::to_string(stats->valueForKey("5")->intValue()).c_str(), "bigFont.fnt");
-			demonText->setPosition(CCPoint(demonIcon->getPositionX() - 12, this->getChildByID("diamond-shards-label")->getPositionY() - 15));
-			demonText->setScale(0.34);
-			demonText->setAnchorPoint({1, 0.5});
-			demonText->setID("demons-label");
+            if (advStats) {
+                auto menu = CCMenu::create();
+                menu->setPosition({winSize.width - 18, winSize.height - 117});
 
-			this->addChild(demonIcon);
-			this->addChild(demonText);
+                auto demonsBtn = CCMenuItemSpriteExtra::create(demonIcon, menu, menu_selector(MyLayer::demonInfo));
+                demonsBtn->setID("demons-icon");
+                menu->addChild(demonsBtn);
+
+                CCDictionary* stats = GameStatsManager::sharedState()->m_playerStats;
+                CCLabelBMFont* demonText = CCLabelBMFont::create(std::to_string(stats->valueForKey("5")->intValue()).c_str(), "bigFont.fnt");
+                demonText->setPosition(CCPoint(menu->getPositionX() - 12, this->getChildByID("diamond-shards-label")->getPositionY() - 15));
+                demonText->setScale(0.34);
+                demonText->setAnchorPoint({1, 0.5});
+                demonText->setID("demons-label");
+                this->addChild(demonText);
+
+                this->addChild(menu);
+            } else {
+                auto demonIconGD = CCSprite::createWithSpriteFrameName("GJ_demonIcon_001.png");
+
+                demonIconGD->setPosition({winSize.width - 18, winSize.height - 117});
+                demonIconGD->setAnchorPoint({0.5, 0.5});
+                demonIconGD->setScale(0.5);
+                demonIconGD->setID("demons-icon");
+
+                CCDictionary* stats = GameStatsManager::sharedState()->m_playerStats;
+                CCLabelBMFont* demonText = CCLabelBMFont::create(std::to_string(stats->valueForKey("5")->intValue()).c_str(), "bigFont.fnt");
+                demonText->setPosition(CCPoint(demonIconGD->getPositionX() - 12, this->getChildByID("diamond-shards-label")->getPositionY() - 15));
+                demonText->setScale(0.34);
+                demonText->setAnchorPoint({1, 0.5});
+                demonText->setID("demons-label");
+                this->addChild(demonText);
+
+                this->addChild(demonIconGD);
+            }
 		}
 
+        if (advStats) {
+            auto starsIcon = this->getChildByID("stars-icon");
+            auto moonsIcon = this->getChildByID("moons-icon");
+
+            auto menu = CCMenu::create();
+            menu->setPosition({starsIcon->getPositionX(), this->getChildByID("stars-icon")->getPositionY()});
+            menu->setID("clickable-stats");
+
+            auto starsBtn = CCMenuItemSpriteExtra::create(starsIcon, menu, menu_selector(MyLayer::starsInfo));
+            starsBtn->setID("stars-btn");
+            menu->addChild(starsBtn);
+
+            auto moonsBtn = CCMenuItemSpriteExtra::create(moonsIcon, menu, menu_selector(MyLayer::moonsInfo));
+            moonsBtn->setPositionY(starsBtn->getPositionY() - 15);
+            moonsBtn->setID("moons-btn");
+            menu->addChild(moonsBtn);
+
+            this->removeChildByID("stars-icon");
+            this->removeChildByID("moons-icon");
+
+            this->addChild(menu);
+        }
+
 		if (cp) {
-            // Credits to Capeling for this code (Demons in Garage)
+    // Credits to Capeling for this code (Demons in Garage)
 
-            auto winSize = CCDirector::sharedDirector()->getWinSize();
+    auto winSize = CCDirector::sharedDirector()->getWinSize();
 
-            auto demonIcon = CCSprite::createWithSpriteFrameName("GJ_hammerIcon_001.png");
-            if (demons || this->getChildByID("demons-icon")) {
-                demonIcon->setPosition({winSize.width - 18, winSize.height - 132});
-            } else {
-                demonIcon->setPosition({winSize.width - 18, winSize.height - 117});
-            }
-            demonIcon->setAnchorPoint({0.5, 0.5});
-            demonIcon->setScale(0.5);
-            demonIcon->setID("cp-icon");
-            this->addChild(demonIcon);
+    auto menu = CCMenu::create();
+    menu->setPosition({0.f, 0.f});
+    this->addChild(menu);  // Ensure the menu is added to the layer
 
-            int accID = GJAccountManager::get()->m_accountID;
+    auto demonIcon1 = CCSprite::create("GaragePlus_cpIcon.png"_spr);
 
-            if (accID != 0) {
-                std::shared_ptr<std::string> pointsStr = std::make_shared<std::string>();
+    auto demonIcon = CCMenuItemSpriteExtra::create(demonIcon1, this, menu_selector(MyLayer::onModSettings));
+    
+    if (demons || this->getChildByID("demons-icon")) {
+        demonIcon->setPosition({winSize.width - 18, winSize.height - 132});
+    } else {
+        demonIcon->setPosition({winSize.width - 18, winSize.height - 117});
+    }
+    demonIcon->setAnchorPoint({0.5, 0.5});
+    demonIcon->setID("cp-icon");
+    menu->addChild(demonIcon);
 
-                // Create the web request
-                web::WebRequest request;
-                request.bodyString(fmt::format("secret=Wmfd2893gb7&targetAccountID={}", accID));
-                request.userAgent(""); // Optionally set a user agent
+    int accID = GJAccountManager::get()->m_accountID;
 
-                std::string url = "https://www.boomlings.com/database/getGJUserInfo20.php";
+    if (accID != 0) {
+        std::shared_ptr<std::string> pointsStr = std::make_shared<std::string>();
 
-                m_fields->m_listener.bind([this, demonIcon, pointsStr, demons](web::WebTask::Event* e) {
-                    if (web::WebResponse* res = e->getValue()) {
-                        if (res->ok()) {
-                            std::string responseBody = res->string().unwrap();
-                            auto start_pos = responseBody.find(":8:");
-                            if (start_pos != std::string::npos) {
-                                auto end_pos = responseBody.find(":", start_pos + 3);
-                                if (end_pos != std::string::npos) {
-                                    *pointsStr = responseBody.substr(start_pos + 3, end_pos - start_pos - 3);
-                                    try {
-                                        int creatorPoints = std::stoi(*pointsStr);
-                                        // Update label with pointsStr
-                                        auto cpText = CCLabelBMFont::create(pointsStr->c_str(), "bigFont.fnt");
-                                        if (demons) {
-                                            cpText->setPosition(CCPoint(demonIcon->getPositionX() - 12, this->getChildByID("diamond-shards-label")->getPositionY() - 30));
-                                        } else {
-                                            cpText->setPosition(CCPoint(demonIcon->getPositionX() - 12, this->getChildByID("diamond-shards-label")->getPositionY() - 15));
-                                        }
-                                        cpText->setScale(0.34);
-                                        cpText->setAnchorPoint({1, 0.5});
-                                        cpText->setID("cp-label");
-                                        this->addChild(cpText);
-                                        this->updateLayout();
-                                    } catch (const std::invalid_argument& e) {
-                                        std::cerr << "Failed to convert creator points to integer: " << e.what() << std::endl;
-                                    }
+        // Create the web request
+        web::WebRequest request;
+        request.bodyString(fmt::format("secret=Wmfd2893gb7&targetAccountID={}", accID));
+        request.userAgent(""); // Optionally set a user agent
+
+        std::string url = "https://www.boomlings.com/database/getGJUserInfo20.php";
+
+        m_fields->m_listener.bind([this, demonIcon, pointsStr, demons](web::WebTask::Event* e) {
+            if (web::WebResponse* res = e->getValue()) {
+                if (res->ok()) {
+                    std::string responseBody = res->string().unwrap();
+                    auto start_pos = responseBody.find(":8:");
+                    if (start_pos != std::string::npos) {
+                        auto end_pos = responseBody.find(":", start_pos + 3);
+                        if (end_pos != std::string::npos) {
+                            *pointsStr = responseBody.substr(start_pos + 3, end_pos - start_pos - 3);
+                            try {
+                                int creatorPoints = std::stoi(*pointsStr);
+                                // Update label with pointsStr
+                                auto cpText = CCLabelBMFont::create(pointsStr->c_str(), "bigFont.fnt");
+                                if (demons) {
+                                    cpText->setPosition(CCPoint(demonIcon->getPositionX() - 12, this->getChildByID("diamond-shards-label")->getPositionY() - 30));
                                 } else {
-                                    std::cerr << "Failed to find ':' after ':8:' in response: " << responseBody << std::endl;
+                                    cpText->setPosition(CCPoint(demonIcon->getPositionX() - 12, this->getChildByID("diamond-shards-label")->getPositionY() - 15));
                                 }
-                            } else {
-                                std::cerr << "Failed to find ':8:' in response: " << responseBody << std::endl;
+                                cpText->setScale(0.34);
+                                cpText->setAnchorPoint({1, 0.5});
+                                cpText->setID("cp-label");
+                                this->addChild(cpText);
+                                this->updateLayout();
+                            } catch (const std::invalid_argument& e) {
+                                std::cerr << "Failed to convert creator points to integer: " << e.what() << std::endl;
                             }
                         } else {
-                            std::cerr << "Request failed with status code: " << res->code() << std::endl;
+                            std::cerr << "Failed to find ':' after ':8:' in response: " << responseBody << std::endl;
                         }
-                    } else if (web::WebProgress* progress = e->getProgress()) {
-                        // Optionally handle progress updates
-                    } else if (e->isCancelled()) {
-                        std::cerr << "The request was cancelled... So sad :(" << std::endl;
+                    } else {
+                        std::cerr << "Failed to find ':8:' in response: " << responseBody << std::endl;
                     }
-                });
-
-                // Send the POST request
-                m_fields->m_listener.setFilter(request.post(url));
+                } else {
+                    std::cerr << "Request failed with status code: " << res->code() << std::endl;
+                }
+            } else if (web::WebProgress* progress = e->getProgress()) {
+                // Optionally handle progress updates
+            } else if (e->isCancelled()) {
+                std::cerr << "The request was cancelled... So sad :(" << std::endl;
             }
-        }
+        });
+
+        // Send the POST request
+        m_fields->m_listener.setFilter(request.post(url));
+    }
+}
 
 		if (tapLockHint) {
 			this->removeChildByID("tap-more-hint");

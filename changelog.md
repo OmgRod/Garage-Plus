@@ -1,6 +1,12 @@
-# v1.4.0
+All versions v1.4.0 and beyond are for 2.206. Geode, at the time of writing this, isn't publicly available for 2.206. If you want to use later versions, download Geode for 2.206 at https://github.com/geode-sdk/geode/releases/nightly
 
-Warning: At the time of releasing this, Geode isn't out for 2.206. If you don't want to download the 2.206 version, download the 2.204 version. Otherwise, download Geode for 2.206 at https://github.com/geode-sdk/geode/releases/nightly
+# v1.4.1-alpha.1
+
+- Overhauled about and changelog sections
+- Added support section
+- Added Discord button
+
+# v1.4.0
 
 - Added 2.206 support
 

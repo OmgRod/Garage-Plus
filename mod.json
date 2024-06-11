@@ -1,8 +1,7 @@
 {
 	"geode": "3.0.0-alpha.1",
-	"version": "v1.4.0",
+	"version": "v1.4.1-alpha.1",
 	"gd": {
-		"android32": "2.206",
 		"win": "2.206"
 	},
 	"resources": {
@@ -11,6 +10,8 @@
 			"resources/GaragePlus_settingsBtn.png",
 			"resources/GaragePlus_feedbackBtn.png",
 			"resources/GaragePlus_profileBtn.png",
+			"resources/GaragePlus_demonIcon.png",
+			"resources/GaragePlus_cpIcon.png",
 			"about-assets/modprev.png"
 		]
 	},
@@ -38,9 +39,14 @@
             "description": "Adds a top bar of buttons (requires Remove Lock Hint setting enabled)",
             "type": "bool",
             "default": true
+        },
+		"advanced-stats": {
+            "name": "Advanced Stats",
+            "description": "Displays advenced stats when clicking icons such as demons and stars (like when you open your profile and click them.)",
+            "type": "bool",
+            "default": true
         }
 	},
-	"repository": "https://github.com/0mgRod/Garage-Plus",
 	"id": "omgrod.garage_plus",
 	"name": "Garage Plus",
 	"developer": "OmgRod",
@@ -53,5 +59,12 @@
 	"issues": {
 		"info": "Report issues to OmgRod on GitHub and they may be fixed in a future release.",
 		"url": "https://github.com/0mgRod/Garage-Plus/issues"
+	},
+	"tags": [
+		"interface", "customization", "utility", "enhancement"
+	],
+	"links": {
+		"community": "https://discord.gg/EXkwkm2sZ9",
+		"source": "https://github.com/0mgRod/Garage-Plus"
 	}
 }

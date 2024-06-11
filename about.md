@@ -1,6 +1,6 @@
 # Garage Plus
 
-This mod adds the following settings and features:
+# Features
 
 - Removes lock hint above icon kit
 - Creator button
@@ -8,5 +8,12 @@ This mod adds the following settings and features:
 - Creator Points in garage (click the icon to refresh)
 - Profile button in garage
 
+# Preview
+
 ![Preview of the mod](omgrod.garage_plus/modprev.png)
-Preview of the mod
+
+# Credits
+
+- OmgRod - Most of the code
+- Capeling - Demons in garage code (and some of the CP in garage code)
+- RobTop - The button in the logo
