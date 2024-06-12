@@ -391,17 +391,17 @@ class $modify(GJGarageLayerModified, GJGarageLayer) {
                 feedbackBtn->setPositionX(winSize.width / 12);
                 buttonsMenu->addChild(feedbackBtn);
 
-                auto playBtnBtnSpr = CCSprite::create("GaragePlus_creatorBtn.png"_spr);
-                auto playBtnBtn = CCMenuItemSpriteExtra::create(
-                    playBtnBtnSpr, this, menu_selector(MyLayer::onClick)
-                );
-                playBtnBtn->setPositionX(winSize.width / 12 * 2);
-                buttonsMenu->addChild(playBtnBtn);
+                // auto playBtnBtnSpr = CCSprite::create("GaragePlus_creatorBtn.png"_spr);
+                // auto playBtnBtn = CCMenuItemSpriteExtra::create(
+                //     playBtnBtnSpr, this, menu_selector(MyLayer::onClick)
+                // );
+                // playBtnBtn->setPositionX(winSize.width / 12 * 2);
+                // buttonsMenu->addChild(playBtnBtn);
 
                 auto profileIcon = CCSprite::create("GaragePlus_profileBtn.png"_spr);
                 auto profileBtn = CCMenuItemSpriteExtra::create(profileIcon, this, menu_selector(MenuLayer::onMyProfile));
                 profileBtn->setID("profile");
-                profileBtn->setPositionX(winSize.width / 12 * 3);
+                profileBtn->setPositionX(winSize.width / 12 * 2);
                 buttonsMenu->addChild(profileBtn);
 
                 // auto feedbackIcon = CCSprite::create("GaragePlus_feedbackBtn.png"_spr);

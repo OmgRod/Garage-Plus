@@ -2,6 +2,10 @@ All versions v1.4.0 and beyond are for 2.206. Geode, at the time of writing this
 
 Also, download missing versions on [GitHub](https://github.com/OmgRod/Garage-Plus/releases)
 
+# v1.5.0
+
+- Removed editor button since there was a bug + it didnt serve much of a purpose.
+
 # v1.4.3
 
 - Added alert on CP refresh
