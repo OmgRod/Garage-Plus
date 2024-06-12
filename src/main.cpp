@@ -5,6 +5,7 @@
 #include <Geode/binding/GJGarageLayer.hpp>
 #include <Geode/utils/web.hpp>
 #include <Geode/ui/GeodeUI.hpp>
+#include <Geode/ui/Notification.hpp>
 
 using namespace geode::prelude;
 
@@ -456,20 +457,27 @@ void refreshCP(CCObject* sender) {
                                 cpText->setID("cp-label");
                                 this->addChild(cpText);
                                 this->updateLayout();
+
+                                geode::Notification::create("CP updated.", geode::NotificationIcon::Success, 2.5)->show();
                             } catch (const std::invalid_argument& e) {
                                 std::cerr << "Failed to convert creator points to integer: " << e.what() << std::endl;
+                                geode::Notification::create("An error occurred while updating CP.", geode::NotificationIcon::Error, 2.5)->show();
                             }
                         } else {
                             std::cerr << "Failed to find ':' after ':8:' in response: " << responseBody << std::endl;
+                            geode::Notification::create("An error occurred while updating CP.", geode::NotificationIcon::Error, 2.5)->show();
                         }
                     } else {
                         std::cerr << "Failed to find ':8:' in response: " << responseBody << std::endl;
+                        geode::Notification::create("An error occurred while updating CP.", geode::NotificationIcon::Error, 2.5)->show();
                     }
                 } else {
                     std::cerr << "Request failed with status code: " << res->code() << std::endl;
+                    geode::Notification::create("An error occurred while updating CP.", geode::NotificationIcon::Error, 2.5)->show();
                 }
             } else if (e->isCancelled()) {
                 std::cerr << "The request was cancelled." << std::endl;
+                geode::Notification::create("An error occurred while updating CP.", geode::NotificationIcon::Error, 2.5)->show();
             }
         });
 
