@@ -446,7 +446,7 @@ class $modify(GJGarageLayerModified, GJGarageLayer) {
 
                 auto creatorBtnIcon = CCSprite::create("GaragePlus_creatorBtn.png"_spr);
                 auto creatorBtn = CCMenuItemSpriteExtra::create(
-                    creatorBtnIcon, this, menu_selector(MyLayer::onDisabled) // MyLayer::onClick
+                    creatorBtnIcon, this, menu_selector(MyLayer::onClick) // MyLayer::onClick
                 );
                 creatorBtn->setID("creator");
                 buttonsMenu->addChild(creatorBtn);
