@@ -4,7 +4,15 @@ Also, download missing versions on [GitHub](https://github.com/OmgRod/Garage-Plu
 
 # v1.5.0
 
-- Removed editor button since there was a bug + it didnt serve much of a purpose.
+- Re-enabled editor button since it was bugged and now fixed
+- ~~Added secret button~~
+- Ported to Geode v3.0.0-beta.1
+- Added setting to disable feedback button
+- Added legal info button in Feedback menu
+- Changed about.md and readme.md
+- Enabled CP in garage by default
+- Bugfixes
+    - Fixed crashes when user not logged in
 
 # v1.4.3
 

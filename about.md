@@ -2,11 +2,11 @@
 
 # Features
 
-- Removes lock hint above icon kit
-- Creator button
-- Demons in garage (compatible with demons in garage mod)
-- Creator Points in garage (click the icon to refresh)
-- Profile button in garage
+- <cy>Removes lock hint</c> above icon kit
+- <cg>Extra top bar</c> of buttons (requires Remove Lock Hint enabled)
+- <cr>Demons</c> in garage (compatible with demons in garage mod)
+- <cp>Creator Points</c> in garage (click the icon to refresh)
+- <cj>Profile button</c> in garage
 
 # Preview
 

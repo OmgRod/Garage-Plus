@@ -118,14 +118,23 @@ public:
         squareSpr->setZOrder(1);
         menu->addChild(squareSpr);
 
-        auto btn = CCMenuItemSpriteExtra::create(
+        auto backBtn = CCMenuItemSpriteExtra::create(
             CCSprite::createWithSpriteFrameName("GJ_arrow_01_001.png"),
             this,
             menu_selector(GPFeedbackLayer::onClick)
         );
-        btn->setPosition(winSize.width * -0.45, winSize.height * 0.4);
-        btn->setID("back-btn");
-        menu->addChild(btn);
+        backBtn->setPosition(winSize.width * -0.45, winSize.height * 0.4);
+        backBtn->setID("back-btn");
+        menu->addChild(backBtn);
+
+        auto infoBtn = CCMenuItemSpriteExtra::create(
+            CCSprite::createWithSpriteFrameName("GJ_infoIcon_001.png"),
+            this,
+            menu_selector(GPFeedbackLayer::onInfoClick)
+        );
+        infoBtn->setPosition(winSize.width * 0.45, winSize.height * 0.45);
+        infoBtn->setID("info-btn");
+        menu->addChild(infoBtn);
 
         auto title = CCLabelBMFont::create("Feedback", "goldFont.fnt");
         title->setZOrder(1);
@@ -166,6 +175,21 @@ public:
     void onClick(CCObject* sender) {
         auto scenePrev = CCTransitionFade::create(0.5f, GPFeedbackLayer::garageScene());
         CCDirector::sharedDirector()->replaceScene(scenePrev);
+    }
+
+    void onInfoClick(CCObject* sender) {
+        FLAlertLayer::create(
+    nullptr, // No delegate needed
+    "Garage Plus", // Title
+    "By submitting your feedback, you agree to the collection and transmission of your username and feedback to a private Discord server accessible only to the developer of this mod, OmgRod. This data will be used solely for improving the mod.\n\nYou may disable the feedback button in this mod's settings at any time to add extra space.\n\nYour data will be stored securely and will not be shared with third parties.\n\nThank you for your feedback!\n\n-OmgRod", // Description
+    "OK", // Button 1 (OK)
+    nullptr, // Button 2 (no second button)
+    400.0f, // Width (adjust as necessary)
+    true, // Scrolling enabled
+    300.0f, // Height (adjust as necessary)
+    1.0f // Text scale (adjust as necessary)
+)->show();
+
     }
 
 private:
@@ -247,6 +271,11 @@ public:
     {
         FLAlertLayer::create("Garage Plus", "This feature may or may not be coming soon", "OK")->show();
     }
+
+    void onDisabled(CCObject* sender)
+    {
+        FLAlertLayer::create("Garage Plus", "This feature is currently disabled possibly due to a bug.", "OK")->show();
+    }
 };
 
 class $modify(GJGarageLayerModified, GJGarageLayer) {
@@ -264,6 +293,7 @@ class $modify(GJGarageLayerModified, GJGarageLayer) {
         auto tapLockHint = Mod::get()->getSettingValue<bool>("no-lock-hint");
         auto topBtns = Mod::get()->getSettingValue<bool>("top-buttons");
         auto advStats = Mod::get()->getSettingValue<bool>("advanced-stats");
+        auto feedback = Mod::get()->getSettingValue<bool>("feedback");
 
         auto winSize = CCDirector::sharedDirector()->getWinSize();
 
@@ -366,18 +396,40 @@ class $modify(GJGarageLayerModified, GJGarageLayer) {
 
                 // Shift elements down for space
 
-                GJGarageLayer::getChildByID("category-menu")->setPositionY(GJGarageLayer::getChildByID("category-menu")->getPositionY() - (winSize.height / 12));
-                GJGarageLayer::getChildByID("floor-line")->setPositionY(GJGarageLayer::getChildByID("floor-line")->getPositionY() - (winSize.height / 12));
-                GJGarageLayer::getChildByID("player-icon")->setPositionY(GJGarageLayer::getChildByID("player-icon")->getPositionY() - (winSize.height / 12));
-                GJGarageLayer::getChildByID("username-label")->setPositionY(GJGarageLayer::getChildByID("username-label")->getPositionY() - (winSize.height / 12));
-                GJGarageLayer::getChildByID("username-lock")->setPositionY(GJGarageLayer::getChildByID("username-lock")->getPositionY() - (winSize.height / 12));
+                this->getChildByID("category-menu")->setPositionY(this->getChildByID("category-menu")->getPositionY() - (winSize.height / 12));
+                this->getChildByID("floor-line")->setPositionY(this->getChildByID("floor-line")->getPositionY() - (winSize.height / 12));
+                this->getChildByID("player-icon")->setPositionY(this->getChildByID("player-icon")->getPositionY() - (winSize.height / 12));
+                this->getChildByID("username-label")->setPositionY(this->getChildByID("username-label")->getPositionY() - (winSize.height / 12));
+                try {
+    // Retrieve the pointer to the "username-lock" child
+    auto usernameLock = this->getChildByID("username-lock");
+    
+    // Check if the pointer is valid
+    if (usernameLock == nullptr) {
+        throw std::runtime_error("Error: username-lock not found");
+    }
+    
+    // Retrieve the current position Y
+    float currentPosY = usernameLock->getPositionY();
+    
+    // Calculate the new position Y
+    float newPosY = currentPosY - (winSize.height / 12);
+    
+    // Set the new position Y
+    usernameLock->setPositionY(newPosY);
+
+} catch (const std::exception& e) {
+    // Handle the error appropriately
+    std::cerr << "Exception caught: " << e.what() << std::endl;
+}
 
                 // Top buttons bar
 
                 auto buttonsMenu = CCMenu::create();
                 buttonsMenu->setID("top-buttons");
-                buttonsMenu->setPosition(CCPoint(winSize.width * 0.4, winSize.height * 0.925));
+                buttonsMenu->setPosition(CCPoint(winSize.width * 0.575, winSize.height * 0.925));
                 buttonsMenu->setContentSize(CCPoint(winSize.width * 0.35, 0.f));
+                buttonsMenu->setLayout(RowLayout::create());
                 this->addChild(buttonsMenu);
 
                 auto modSettingsIcon = CCSprite::create("GaragePlus_settingsBtn.png"_spr);
@@ -385,30 +437,29 @@ class $modify(GJGarageLayerModified, GJGarageLayer) {
                 modSettingsBtn->setID("mod-settings");
                 buttonsMenu->addChild(modSettingsBtn);
 
-                auto feedbackIcon = CCSprite::create("GaragePlus_feedbackBtn.png"_spr);
-                auto feedbackBtn = CCMenuItemSpriteExtra::create(feedbackIcon, this, menu_selector(MyLayer::onFeedbackBtn));
-                feedbackBtn->setID("feedback");
-                feedbackBtn->setPositionX(winSize.width / 12);
-                buttonsMenu->addChild(feedbackBtn);
+                if (feedback) {
+                    auto feedbackIcon = CCSprite::create("GaragePlus_feedbackBtn.png"_spr);
+                    auto feedbackBtn = CCMenuItemSpriteExtra::create(feedbackIcon, this, menu_selector(MyLayer::onFeedbackBtn));
+                    feedbackBtn->setID("feedback");
+                    buttonsMenu->addChild(feedbackBtn);
+                }
 
-                // auto playBtnBtnSpr = CCSprite::create("GaragePlus_creatorBtn.png"_spr);
-                // auto playBtnBtn = CCMenuItemSpriteExtra::create(
-                //     playBtnBtnSpr, this, menu_selector(MyLayer::onClick)
-                // );
-                // playBtnBtn->setPositionX(winSize.width / 12 * 2);
-                // buttonsMenu->addChild(playBtnBtn);
+                auto creatorBtnIcon = CCSprite::create("GaragePlus_creatorBtn.png"_spr);
+                auto creatorBtn = CCMenuItemSpriteExtra::create(
+                    creatorBtnIcon, this, menu_selector(MyLayer::onDisabled) // MyLayer::onClick
+                );
+                creatorBtn->setID("creator");
+                buttonsMenu->addChild(creatorBtn);
 
                 auto profileIcon = CCSprite::create("GaragePlus_profileBtn.png"_spr);
                 auto profileBtn = CCMenuItemSpriteExtra::create(profileIcon, this, menu_selector(MenuLayer::onMyProfile));
                 profileBtn->setID("profile");
-                profileBtn->setPositionX(winSize.width / 12 * 2);
                 buttonsMenu->addChild(profileBtn);
 
-                // auto feedbackIcon = CCSprite::create("GaragePlus_feedbackBtn.png"_spr);
-                // auto feedbackBtn = CCMenuItemSpriteExtra::create(feedbackIcon, this, menu_selector(MyLayer::onFeedbackBtn));
-                // feedbackBtn->setID("feedback");
-                // feedbackBtn->setPositionX(winSize.width / 12);
-                // buttonsMenu->addChild(feedbackBtn);
+                // auto demonIconsIcon = CCSprite::create("GaragePlus_demonKeysBtn.png"_spr);
+                // auto demonIconsBtn = CCMenuItemSpriteExtra::create(demonIconsIcon, this, menu_selector(nullptr));
+                // demonIconsBtn->setID("demon-icons-btn");
+                // buttonsMenu->addChild(demonIconsBtn);
 
                 buttonsMenu->updateLayout();
             }
