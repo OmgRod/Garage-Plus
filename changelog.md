@@ -6,7 +6,6 @@ Also, download missing versions on [GitHub](https://github.com/OmgRod/Garage-Plu
 
 - Added Android support
 - Disabled editor button since it was bugged
-- ~~Added secret button~~
 - Ported to Geode v3.0.0-beta.1
 - Added setting to disable feedback button
 - Added legal info button in Feedback menu
