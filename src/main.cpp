@@ -38,52 +38,62 @@ public:
     }
 
     void onFeedbackClick(CCObject* sender) {
-        auto descInput = dynamic_cast<CCTextInputNode*>(this->getChildByID("descInput"));
-        if (!descInput)
-            return;
+    auto descInput = dynamic_cast<CCTextInputNode*>(this->getChildByID("descInput"));
+    if (!descInput)
+        return;
 
-        std::string feedback = descInput->getString();
-        std::string username = "Anonymous";
+    std::string feedback = descInput->getString();
+    std::string username = "Anonymous";
 
-        if (GJAccountManager::get()->m_accountID != 0) {
-            username = std::string(GJAccountManager::get()->m_username.c_str());
-        }
-
-        std::string payload = "{\"content\": \"" + username + " said:\\n\\n" + feedback + "\",\"embeds\": null,\"attachments\": []}";
-
-        web::WebRequest request;
-        // request.method("POST");
-        request.header("Content-Type", "application/json");
-        request.bodyString(payload);
-        request.timeout(std::chrono::seconds(30));
-
-        std::string url = "https://canary.discord.com/api/webhooks/1225440650988884029/NPsyWQuLi6x3GB-DymtlIvVIlzC0Gm0qocSxbq9wILUhnjZsGR5Rc6YEY2mEtdpvQ0x_";
-
-        m_listener.bind([this](web::WebTask::Event* e) {
-    if (web::WebResponse* res = e->getValue()) {
-        if (res->ok()) {
-            log::debug("Feedback sent successfully!");
-            geode::createQuickPopup(
-                "Garage Plus",
-                "Feedback sent successfully!",
-                "Exit", nullptr,
-                [this](auto, bool btn1) {
-                    this->onClick(nullptr);
-                }
-            );
-        } else {
-            log::error("Request failed with status code: {}", res->code());
-        }
-    } else if (web::WebProgress* progress = e->getProgress()) {
-        // log::debug("Progress: ", progress->downloadProgress());
-    } else if (e->isCancelled()) {
-        log::error("The request was cancelled... So sad :(");
+    if (GJAccountManager::get()->m_accountID != 0) {
+        username = std::string(GJAccountManager::get()->m_username.c_str());
     }
-});
 
-m_listener.setFilter(request.post(url));
-
+    if (feedback.empty()) {
+        log::error("Feedback cannot be empty.");
+        geode::createQuickPopup(
+            "Garage Plus",
+            "Feedback cannot be empty.",
+            "OK", nullptr,
+            nullptr // No action on Exit button click
+        );
+        return;
     }
+
+    std::string payload = "{\"username\": \"" + username + "\", \"feedback\": \"" + feedback + "\"}";
+
+    web::WebRequest request;
+    // request.method("POST");
+    request.header("Content-Type", "application/json");
+    request.bodyString(payload);
+    request.timeout(std::chrono::seconds(30));
+
+    std::string url = "https://script.google.com/macros/s/AKfycbzenL-ibrk3BxARfFrhSHW70mlt-jV_O7NNbOqq2dlO6vzsiSQ8gzvpsi7kxtMfvDgl/exec"; // Replace with your Google Apps Script web app URL
+
+    m_listener.bind([this](web::WebTask::Event* e) {
+        if (web::WebResponse* res = e->getValue()) {
+            if (res->ok()) {
+                log::debug("Feedback sent successfully!");
+                geode::createQuickPopup(
+                    "Garage Plus",
+                    "Feedback sent successfully!",
+                    "Exit", nullptr,
+                    [this](auto, bool btn1) {
+                        this->onClick(nullptr);
+                    }
+                );
+            } else {
+                log::error("Request failed with status code: {}", res->code());
+            }
+        } else if (web::WebProgress* progress = e->getProgress()) {
+            // log::debug("Progress: ", progress->downloadProgress());
+        } else if (e->isCancelled()) {
+            log::error("The request was cancelled... So sad :(");
+        }
+    });
+
+    m_listener.setFilter(request.post(url));
+}
 
     bool init() {
         if (!CCLayer::init())
@@ -461,10 +471,10 @@ class $modify(GJGarageLayerModified, GJGarageLayer) {
                 profileBtn->setID("profile");
                 buttonsMenu->addChild(profileBtn);
 
-                // auto demonIconsIcon = CCSprite::create("GaragePlus_demonKeysBtn.png"_spr);
-                // auto demonIconsBtn = CCMenuItemSpriteExtra::create(demonIconsIcon, this, menu_selector(nullptr));
-                // demonIconsBtn->setID("demon-icons-btn");
-                // buttonsMenu->addChild(demonIconsBtn);
+                auto demonIconsIcon = CCSprite::create("GaragePlus_demonKeysBtn.png"_spr);
+                auto demonIconsBtn = CCMenuItemSpriteExtra::create(demonIconsIcon, this, menu_selector(MyLayer::onDisabled));
+                demonIconsBtn->setID("demon-icons-btn");
+                buttonsMenu->addChild(demonIconsBtn);
 
                 buttonsMenu->updateLayout();
             }

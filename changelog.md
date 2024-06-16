@@ -2,6 +2,12 @@ All versions v1.4.0 and beyond are for 2.206. Geode, at the time of writing this
 
 Also, download missing versions on [GitHub](https://github.com/OmgRod/Garage-Plus/releases)
 
+# v1.6.0
+
+- Clarified feedback menu title
+- ~~Added demon key icon button~~
+- Updated feedback API
+
 # v1.5.0
 
 - Added Android support
