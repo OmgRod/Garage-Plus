@@ -62,7 +62,7 @@ public:
         m_listener.bind([this](web::WebTask::Event* e) {
             if (web::WebResponse* res = e->getValue()) {
                 if (res->ok()) {
-                    std::cout << "Feedback sent successfully!" << std::endl;
+                    log::debug("Feedback sent successfully!");
                     geode::createQuickPopup(
                         "Garage Plus",
                         "Feedback sent successfully!",
@@ -72,12 +72,12 @@ public:
                         }
                     );
                 } else {
-                    std::cerr << "Request failed with status code: " << res->code() << std::endl;
+                    log::error("Request failed with status code: ", res->code(), ;
                 }
             } else if (web::WebProgress* progress = e->getProgress()) {
-                // std::cout << "Progress: " << progress->downloadProgress() << std::endl;
+                // log::debug("Progress: ", progress->downloadProgress());
             } else if (e->isCancelled()) {
-                std::cerr << "The request was cancelled... So sad :(" << std::endl;
+                log::error("The request was cancelled... So sad :(", ;
             }
         });
 
@@ -319,6 +319,7 @@ class $modify(GJGarageLayerModified, GJGarageLayer) {
                 demonText->setID("demons-label");
                 this->addChild(demonText);
 
+                menu->setID("demons-icon");
                 this->addChild(menu);
             } else {
                 auto demonIconGD = CCSprite::createWithSpriteFrameName("GJ_demonIcon_001.png");
@@ -359,6 +360,8 @@ class $modify(GJGarageLayerModified, GJGarageLayer) {
 
             this->removeChildByID("stars-icon");
             this->removeChildByID("moons-icon");
+
+            menu->setID();
 
             this->addChild(menu);
         }
@@ -421,7 +424,7 @@ class $modify(GJGarageLayerModified, GJGarageLayer) {
 
 } catch (const std::exception& e) {
     // Handle the error appropriately
-    std::cerr << "Exception caught: " << e.what() << std::endl;
+    log::error("Exception caught: ", e.what(), ;
 }
 
                 // Top buttons bar
@@ -474,7 +477,7 @@ void refreshCP(CCObject* sender) {
     auto demonIcon = this->getChildByID("cp-menu")->getChildByID("cp-icon");
     this->removeChildByID("cp-label");
     if (!demonIcon) {
-        std::cout << "Error: 'cp-icon' not found." << std::endl;
+        log::debug("Error: 'cp-icon' not found.");
         return;
     }
 
@@ -510,33 +513,38 @@ void refreshCP(CCObject* sender) {
                                 this->addChild(cpText);
                                 this->updateLayout();
 
-                                geode::Notification::create("CP updated.", geode::NotificationIcon::Success, 2.5)->show();
+                                // to all people in #dev-chat, i removed it
+                                // and i un-abbreviated it
+                                //  AND I BELIEVE I FIXED THE LOGGING STUFF
+                                // im so stupid ngl
+
+                                // geode::Notification::create("CP updated.", geode::NotificationIcon::Success, 2.5)->show();
                             } catch (const std::invalid_argument& e) {
-                                std::cerr << "Failed to convert creator points to integer: " << e.what() << std::endl;
-                                geode::Notification::create("An error occurred while updating CP.", geode::NotificationIcon::Error, 2.5)->show();
+                                log::error("Failed to convert creator points to integer: {}", e.what());
+                                geode::Notification::create("An error occurred while updating Creator Points.", geode::NotificationIcon::Error, 2.5)->show();
                             }
                         } else {
-                            std::cerr << "Failed to find ':' after ':8:' in response: " << responseBody << std::endl;
-                            geode::Notification::create("An error occurred while updating CP.", geode::NotificationIcon::Error, 2.5)->show();
+                            log::error("Failed to find ':' after ':8:' in response: {}", responseBody);
+                            geode::Notification::create("An error occurred while updating Creator Points.", geode::NotificationIcon::Error, 2.5)->show();
                         }
                     } else {
-                        std::cerr << "Failed to find ':8:' in response: " << responseBody << std::endl;
-                        geode::Notification::create("An error occurred while updating CP.", geode::NotificationIcon::Error, 2.5)->show();
+                        log::error("Failed to find ':8:' in response: {}", responseBody);
+                        geode::Notification::create("An error occurred while updating Creator Points.", geode::NotificationIcon::Error, 2.5)->show();
                     }
                 } else {
-                    std::cerr << "Request failed with status code: " << res->code() << std::endl;
-                    geode::Notification::create("An error occurred while updating CP.", geode::NotificationIcon::Error, 2.5)->show();
+                    log::error("Request failed with status code: {}", res->code());
+                    geode::Notification::create("An error occurred while updating Creator Points.", geode::NotificationIcon::Error, 2.5)->show();
                 }
             } else if (e->isCancelled()) {
-                std::cerr << "The request was cancelled." << std::endl;
-                geode::Notification::create("An error occurred while updating CP.", geode::NotificationIcon::Error, 2.5)->show();
+                log::error("The request was cancelled.");
+                geode::Notification::create("An error occurred while updating Creator Points.", geode::NotificationIcon::Error, 2.5)->show();
             }
         });
 
         // Set filter for the listener
         m_fields->m_listener.setFilter(request.post(url));
     } else {
-        std::cout << "Invalid account ID." << std::endl;
+        log::debug("Invalid account ID.");
     }
     demonIcon->setVisible(true);
 }

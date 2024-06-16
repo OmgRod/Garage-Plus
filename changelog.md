@@ -13,6 +13,8 @@ Also, download missing versions on [GitHub](https://github.com/OmgRod/Garage-Plu
 - Enabled CP in garage by default
 - Bugfixes
     - Fixed crashes when user not logged in
+- This stuff is for the devs:
+    - Changed from `std::cout` **and stuff like that** to `log::debug` **and stuff like that**
 
 # v1.4.3
 
