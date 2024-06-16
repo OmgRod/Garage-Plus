@@ -178,15 +178,16 @@ public:
     }
 
     void onInfoClick(CCObject* sender) {
+auto winSize = CCDirector::sharedDirector()->getWinSize();
         FLAlertLayer::create(
     nullptr, // No delegate needed
     "Garage Plus", // Title
     "By submitting your feedback, you agree to the collection and transmission of your username and feedback to a private Discord server accessible only to the developer of this mod, OmgRod. This data will be used solely for improving the mod.\n\nYou may disable the feedback button in this mod's settings at any time to add extra space.\n\nYour data will be stored securely and will not be shared with third parties.\n\nThank you for your feedback!\n\n-OmgRod", // Description
     "OK", // Button 1 (OK)
     nullptr, // Button 2 (no second button)
-    400.0f, // Width (adjust as necessary)
+    winSize.width * 0.75, // Width (adjust as necessary)
     true, // Scrolling enabled
-    300.0f, // Height (adjust as necessary)
+    winSize.height * 0.75, // Height (adjust as necessary)
     1.0f // Text scale (adjust as necessary)
 )->show();
 
@@ -446,7 +447,7 @@ class $modify(GJGarageLayerModified, GJGarageLayer) {
 
                 auto creatorBtnIcon = CCSprite::create("GaragePlus_creatorBtn.png"_spr);
                 auto creatorBtn = CCMenuItemSpriteExtra::create(
-                    creatorBtnIcon, this, menu_selector(MyLayer::onClick) // MyLayer::onClick
+                    creatorBtnIcon, this, menu_selector(MyLayer::onDisabled) // MyLayer::onClick
                 );
                 creatorBtn->setID("creator");
                 buttonsMenu->addChild(creatorBtn);
