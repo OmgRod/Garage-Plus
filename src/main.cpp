@@ -147,7 +147,7 @@ public:
         infoBtn->setID("info-btn");
         menu->addChild(infoBtn);
 
-        auto title = CCLabelBMFont::create("Feedback", "goldFont.fnt");
+        auto title = CCLabelBMFont::create("Garage Plus Feedback", "goldFont.fnt");
         title->setZOrder(1);
         title->setPositionY(winSize.width * 0.185);
         title->setID("title");
