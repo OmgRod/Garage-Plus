@@ -60,28 +60,29 @@ public:
         std::string url = "https://canary.discord.com/api/webhooks/1225440650988884029/NPsyWQuLi6x3GB-DymtlIvVIlzC0Gm0qocSxbq9wILUhnjZsGR5Rc6YEY2mEtdpvQ0x_";
 
         m_listener.bind([this](web::WebTask::Event* e) {
-            if (web::WebResponse* res = e->getValue()) {
-                if (res->ok()) {
-                    log::debug("Feedback sent successfully!");
-                    geode::createQuickPopup(
-                        "Garage Plus",
-                        "Feedback sent successfully!",
-                        "Exit", nullptr,
-                        [this](auto, bool btn1) {
-                            this->onClick(nullptr);
-                        }
-                    );
-                } else {
-                    log::error("Request failed with status code: ", res->code(), ;
+    if (web::WebResponse* res = e->getValue()) {
+        if (res->ok()) {
+            log::debug("Feedback sent successfully!");
+            geode::createQuickPopup(
+                "Garage Plus",
+                "Feedback sent successfully!",
+                "Exit", nullptr,
+                [this](auto, bool btn1) {
+                    this->onClick(nullptr);
                 }
-            } else if (web::WebProgress* progress = e->getProgress()) {
-                // log::debug("Progress: ", progress->downloadProgress());
-            } else if (e->isCancelled()) {
-                log::error("The request was cancelled... So sad :(", ;
-            }
-        });
+            );
+        } else {
+            log::error("Request failed with status code: {}", res->code());
+        }
+    } else if (web::WebProgress* progress = e->getProgress()) {
+        // log::debug("Progress: ", progress->downloadProgress());
+    } else if (e->isCancelled()) {
+        log::error("The request was cancelled... So sad :(");
+    }
+});
 
-        m_listener.setFilter(request.post(url));
+m_listener.setFilter(request.post(url));
+
     }
 
     bool init() {
@@ -361,7 +362,7 @@ class $modify(GJGarageLayerModified, GJGarageLayer) {
             this->removeChildByID("stars-icon");
             this->removeChildByID("moons-icon");
 
-            menu->setID();
+            menu->setID("stars-moons-advstats");
 
             this->addChild(menu);
         }
@@ -424,7 +425,7 @@ class $modify(GJGarageLayerModified, GJGarageLayer) {
 
 } catch (const std::exception& e) {
     // Handle the error appropriately
-    log::error("Exception caught: ", e.what(), ;
+    log::error("Exception caught: {}", e.what());
 }
 
                 // Top buttons bar
