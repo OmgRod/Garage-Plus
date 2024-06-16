@@ -4,6 +4,7 @@ Also, download missing versions on [GitHub](https://github.com/OmgRod/Garage-Plu
 
 # v1.5.0
 
+- Added Android64 and MacOS support
 - Disabled editor button since it was bugged
 - ~~Added secret button~~
 - Ported to Geode v3.0.0-beta.1
