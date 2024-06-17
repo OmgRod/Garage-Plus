@@ -459,22 +459,22 @@ class $modify(GJGarageLayerModified, GJGarageLayer) {
                     buttonsMenu->addChild(feedbackBtn);
                 }
 
-                auto creatorBtnIcon = CCSprite::create("GaragePlus_creatorBtn.png"_spr);
-                auto creatorBtn = CCMenuItemSpriteExtra::create(
-                    creatorBtnIcon, this, menu_selector(MyLayer::onDisabled) // MyLayer::onClick
-                );
-                creatorBtn->setID("creator");
-                buttonsMenu->addChild(creatorBtn);
+                // auto creatorBtnIcon = CCSprite::create("GaragePlus_creatorBtn.png"_spr);
+                // auto creatorBtn = CCMenuItemSpriteExtra::create(
+                //     creatorBtnIcon, this, menu_selector(MyLayer::onDisabled) // MyLayer::onClick
+                // );
+                // creatorBtn->setID("creator");
+                // buttonsMenu->addChild(creatorBtn);
 
                 auto profileIcon = CCSprite::create("GaragePlus_profileBtn.png"_spr);
                 auto profileBtn = CCMenuItemSpriteExtra::create(profileIcon, this, menu_selector(MenuLayer::onMyProfile));
                 profileBtn->setID("profile");
                 buttonsMenu->addChild(profileBtn);
 
-                auto demonIconsIcon = CCSprite::create("GaragePlus_demonKeysBtn.png"_spr);
-                auto demonIconsBtn = CCMenuItemSpriteExtra::create(demonIconsIcon, this, menu_selector(MyLayer::onDisabled));
-                demonIconsBtn->setID("demon-icons-btn");
-                buttonsMenu->addChild(demonIconsBtn);
+                // auto demonIconsIcon = CCSprite::create("GaragePlus_demonKeysBtn.png"_spr);
+                // auto demonIconsBtn = CCMenuItemSpriteExtra::create(demonIconsIcon, this, menu_selector(MyLayer::onDisabled));
+                // demonIconsBtn->setID("demon-icons-btn");
+                // buttonsMenu->addChild(demonIconsBtn);
 
                 buttonsMenu->updateLayout();
             }

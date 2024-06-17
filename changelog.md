@@ -5,7 +5,7 @@ Also, download missing versions on [GitHub](https://github.com/OmgRod/Garage-Plu
 # v1.6.0
 
 - Clarified feedback menu title
-- ~~Added demon key icon button~~
+- Temporarily removed creator button
 - Updated feedback API
 
 # v1.5.0
