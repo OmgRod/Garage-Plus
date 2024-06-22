@@ -6,7 +6,6 @@
 #include <Geode/utils/web.hpp>
 #include <Geode/ui/GeodeUI.hpp>
 #include <Geode/ui/Notification.hpp>
-#include <windows.h>
 
 using namespace geode::prelude;
 
