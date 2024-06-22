@@ -6,6 +6,7 @@
 #include <Geode/utils/web.hpp>
 #include <Geode/ui/GeodeUI.hpp>
 #include <Geode/ui/Notification.hpp>
+#include <windows.h>
 
 using namespace geode::prelude;
 
@@ -68,7 +69,7 @@ public:
     request.bodyString(payload);
     request.timeout(std::chrono::seconds(30));
 
-    std::string url = "https://script.google.com/macros/s/AKfycbzenL-ibrk3BxARfFrhSHW70mlt-jV_O7NNbOqq2dlO6vzsiSQ8gzvpsi7kxtMfvDgl/exec"; // Replace with your Google Apps Script web app URL
+    std::string url = "https://script.google.com/macros/s/AKfycbypWwhGgrokYp1_5SaOw6Pp_Y2_9XuZh5ayXIFncIrvK0uTmvZmrQ6ff1f2bYFYVj2Vgg/exec"; // Replace with your Google Apps Script web app URL
 
     m_listener.bind([this](web::WebTask::Event* e) {
         if (web::WebResponse* res = e->getValue()) {
@@ -447,10 +448,15 @@ class $modify(GJGarageLayerModified, GJGarageLayer) {
                 buttonsMenu->setLayout(RowLayout::create());
                 this->addChild(buttonsMenu);
 
-                auto modSettingsIcon = CCSprite::create("GaragePlus_settingsBtn.png"_spr);
-                auto modSettingsBtn = CCMenuItemSpriteExtra::create(modSettingsIcon, this, menu_selector(MyLayer::onModSettings));
+                auto modSettingsIcon = CCSprite::create("GaragePlus_modSettingsBtn.png"_spr);
+                auto modSettingsBtn = CCMenuItemSpriteExtra::create(modSettingsIcon, this, menu_selector(MenuLayer::onOptions));
                 modSettingsBtn->setID("mod-settings");
                 buttonsMenu->addChild(modSettingsBtn);
+
+                auto gameSettingsIcon = CCSprite::create("GaragePlus_gameSettingsBtn.png"_spr);
+                auto gameSettingsBtn = CCMenuItemSpriteExtra::create(gameSettingsIcon, this, menu_selector(MyLayer::onModSettings));
+                gameSettingsBtn->setID("game-settings");
+                buttonsMenu->addChild(gameSettingsBtn);
 
                 if (feedback) {
                     auto feedbackIcon = CCSprite::create("GaragePlus_feedbackBtn.png"_spr);

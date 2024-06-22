@@ -7,6 +7,7 @@ Also, download missing versions on [GitHub](https://github.com/OmgRod/Garage-Plu
 - Clarified feedback menu title
 - Temporarily removed creator button
 - Updated feedback API
+- Added game settings button (seperate from mod settings button)
 
 # v1.5.0
 
