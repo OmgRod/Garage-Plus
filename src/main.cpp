@@ -1,5 +1,8 @@
+// Headers
+
 #include <chrono>
 #include <iostream>
+
 #include <Geode/Geode.hpp>
 #include <Geode/loader/Loader.hpp>
 #include <Geode/modify/GJGarageLayer.hpp>
@@ -7,92 +10,15 @@
 #include <Geode/utils/web.hpp>
 #include <Geode/ui/GeodeUI.hpp>
 #include <Geode/ui/Notification.hpp>
+
+#include <capeling.garage-stats-menu/include/StatsDisplayAPI.h>
+
 #include "GPFeedbackLayer.hpp"
-// #include "MyLayer.hpp"
+#include "MyLayer.hpp"
+
+// Code stuffs
 
 using namespace geode::prelude;
-
-class MyLayer : public CCLayer
-{
-public:
-    struct Fields {
-        EventListener<web::WebTask> m_listener;
-    };
-
-private:
-    Fields* m_fields;
-
-public:
-    MyLayer() : m_fields(new Fields()) {}
-
-    ~MyLayer() {
-        delete m_fields;
-    }
-
-    static CCScene* scene()
-    {
-        auto scene = CCScene::create();
-        scene->addChild(MyLayer::create());
-        return scene;
-    }
-
-    static MyLayer* create()
-    {
-        MyLayer* ret = new MyLayer();
-        if (ret && ret->init())
-        {
-            ret->autorelease();
-            return ret;
-        }
-        delete ret;
-        return nullptr;
-    }
-
-    bool init()
-    {
-        if (!CCLayer::init())
-            return false;
-
-        return true;
-    }
-
-    void onClick(CCObject* sender)
-    {
-        auto scenePrev = CCTransitionFade::create(0.5f, MyLayer::scene());
-        CCDirector::sharedDirector()->replaceScene(scenePrev);
-    }
-
-    void onModSettings(CCObject* sender)
-    {
-        openSettingsPopup(Mod::get());
-    }
-
-    void onFeedbackBtn(CCObject* sender)
-    {
-        auto scenePrev = CCTransitionFade::create(0.5f, GPFeedbackLayer::scene());
-        CCDirector::sharedDirector()->replaceScene(scenePrev);
-    }
-
-    void demonInfo(CCObject* sender)
-    {
-        FLAlertLayer::create("Garage Plus", "This feature may or may not be coming soon", "OK")->show();
-    }
-
-    void starsInfo(CCObject* sender)
-    {
-        FLAlertLayer::create("Garage Plus", "This feature may or may not be coming soon", "OK")->show();
-    }
-
-    void moonsInfo(CCObject* sender)
-    {
-        FLAlertLayer::create("Garage Plus", "This feature may or may not be coming soon", "OK")->show();
-    }
-
-    void onDisabled(CCObject* sender)
-    {
-        FLAlertLayer::create("Garage Plus", "This feature is currently disabled possibly due to a bug.", "OK")->show();
-    }
-};
 
 class $modify(GJGarageLayerModified, GJGarageLayer) {
     struct Fields {
@@ -108,108 +34,87 @@ class $modify(GJGarageLayerModified, GJGarageLayer) {
             return false;
         }
 
-        auto demons = Mod::get()->getSettingValue<bool>("demons");
         auto cp = Mod::get()->getSettingValue<bool>("cp");
         auto tapLockHint = Mod::get()->getSettingValue<bool>("no-lock-hint");
         auto topBtns = Mod::get()->getSettingValue<bool>("top-buttons");
-        auto advStats = Mod::get()->getSettingValue<bool>("advanced-stats");
         auto feedback = Mod::get()->getSettingValue<bool>("feedback");
 
         auto winSize = CCDirector::sharedDirector()->getWinSize();
 
-        if (demons) {
+        /* if (demons) {
             // Credits to Capeling for this code (Demons in Garage)
 
-            auto demonIcon = CCSprite::create("GaragePlus_demonIcon.png"_spr);
+            // Deprecated stuff (sorry!)
 
-            if (advStats) {
-                auto menu = CCMenu::create();
-                menu->setPosition({winSize.width - 18, winSize.height - 117});
+            // auto statMenu = this->getChildByID("capeling.garage-stats-menu/stats-menu");
 
-                auto demonsBtn = CCMenuItemSpriteExtra::create(demonIcon, menu, menu_selector(MyLayer::demonInfo));
-                demonsBtn->setID("demons-icon");
-                menu->addChild(demonsBtn);
+            // auto myStatItem = StatsDisplayAPI::getNewItem("demons"_spr, CCSprite::create("GaragePlus_demonIcon.png"_spr), GameStatsManager::sharedState()->getStat("5"), 1.f);
 
-                CCDictionary* stats = GameStatsManager::sharedState()->m_playerStats;
-                CCLabelBMFont* demonText = CCLabelBMFont::create(std::to_string(stats->valueForKey("5")->intValue()).c_str(), "bigFont.fnt");
-                demonText->setPosition(CCPoint(menu->getPositionX() - 12, this->getChildByID("diamond-shards-label")->getPositionY() - 15));
-                demonText->setScale(0.34);
-                demonText->setAnchorPoint({1, 0.5});
-                demonText->setID("demons-label");
-                this->addChild(demonText);
-
-                menu->setID("demons-icon");
-                this->addChild(menu);
-            } else {
-                auto demonIconGD = CCSprite::createWithSpriteFrameName("GJ_demonIcon_001.png");
-
-                demonIconGD->setPosition({winSize.width - 18, winSize.height - 117});
-                demonIconGD->setAnchorPoint({0.5, 0.5});
-                demonIconGD->setScale(0.5);
-                demonIconGD->setID("demons-icon");
-
-                CCDictionary* stats = GameStatsManager::sharedState()->m_playerStats;
-                CCLabelBMFont* demonText = CCLabelBMFont::create(std::to_string(stats->valueForKey("5")->intValue()).c_str(), "bigFont.fnt");
-                demonText->setPosition(CCPoint(demonIconGD->getPositionX() - 12, this->getChildByID("diamond-shards-label")->getPositionY() - 15));
-                demonText->setScale(0.34);
-                demonText->setAnchorPoint({1, 0.5});
-                demonText->setID("demons-label");
-                this->addChild(demonText);
-
-                this->addChild(demonIconGD);
-            }
-        }
-
-        if (advStats) {
-            auto starsIcon = this->getChildByID("stars-icon");
-            auto moonsIcon = this->getChildByID("moons-icon");
-
-            auto menu = CCMenu::create();
-            menu->setPosition({starsIcon->getPositionX(), this->getChildByID("stars-icon")->getPositionY()});
-            menu->setID("clickable-stats");
-
-            auto starsBtn = CCMenuItemSpriteExtra::create(starsIcon, menu, menu_selector(MyLayer::starsInfo));
-            starsBtn->setID("stars-btn");
-            menu->addChild(starsBtn);
-
-            auto moonsBtn = CCMenuItemSpriteExtra::create(moonsIcon, menu, menu_selector(MyLayer::moonsInfo));
-            moonsBtn->setPositionY(starsBtn->getPositionY() - 15);
-            moonsBtn->setID("moons-btn");
-            menu->addChild(moonsBtn);
-
-            this->removeChildByID("stars-icon");
-            this->removeChildByID("moons-icon");
-
-            menu->setID("stars-moons-advstats");
-
-            this->addChild(menu);
-        }
+            // if (statMenu) {
+            //     statMenu->addChild(myStatItem);
+            //     statMenu->updateLayout();
+            // }
+        } */
 
         if (cp) {
             // Credits to Capeling for this code (CP in Garage)
 
-            auto menu = CCMenu::create();
-            menu->setPosition({0.f, 0.f});
-            this->addChild(menu);  // Ensure the menu is added to the layer
+            auto statMenu = this->getChildByID("capeling.garage-stats-menu/stats-menu");
+    
+            // Fetch user information from the server
+            int accID = GJAccountManager::get()->m_accountID;
+            if (accID != 0) {
+                std::string url = "https://www.boomlings.com/database/getGJUserInfo20.php";
+                std::string secret = "Wmfd2893gb7";
+                std::string targetAccountID = std::to_string(accID);
 
-            auto cpIconSprite = CCSprite::create("GaragePlus_cpIcon.png"_spr);
-            auto cpIcon = CCMenuItemSpriteExtra::create(
-                cpIconSprite,
-                this,
-                menu_selector(GJGarageLayerModified::refreshCP)  // Correctly bind the member function
-            );
+                web::WebRequest request;
+                request.bodyString("secret=" + secret + "&targetAccountID=" + targetAccountID);
+                request.userAgent("");
 
-            if (demons || this->getChildByID("demons-icon")) {
-                cpIcon->setPosition({winSize.width - 18, winSize.height - 132});
+                // Callback function for handling web request response
+                m_fields->m_listener.bind([=](web::WebTask::Event* e) {
+                    if (web::WebResponse* res = e->getValue()) {
+                        if (res->ok()) {
+                            std::string responseBody = res->string().unwrap();
+                            size_t start_pos = responseBody.find(":8:");
+                            if (start_pos != std::string::npos) {
+                                size_t end_pos = responseBody.find(":", start_pos + 3);
+                                if (end_pos != std::string::npos) {
+                                    auto myStatItem = StatsDisplayAPI::getNewItem(
+                                        "creator-points"_spr, 
+                                        CCSprite::create("GaragePlus_cpIcon.png"_spr), 
+                                        std::stoi(responseBody.substr(start_pos + 3, end_pos - start_pos - 3)), 
+                                        1.f
+                                    );
+
+                                    if (statMenu) {
+                                        statMenu->addChild(myStatItem);
+                                        statMenu->updateLayout();
+                                    }
+                                } else {
+                                    log::error("Failed to find ':' after ':8:' in response: {}", responseBody);
+                                    geode::Notification::create("An error occurred while updating Creator Points.", geode::NotificationIcon::Error, 2.5)->show();
+                                }
+                            } else {
+                                log::error("Failed to find ':8:' in response: {}", responseBody);
+                                geode::Notification::create("An error occurred while updating Creator Points.", geode::NotificationIcon::Error, 2.5)->show();
+                            }
+                        } else {
+                            log::error("Request failed with status code: {}", res->code());
+                            geode::Notification::create("An error occurred while updating Creator Points.", geode::NotificationIcon::Error, 2.5)->show();
+                        }
+                    } else if (e->isCancelled()) {
+                        log::error("The request was cancelled.");
+                        geode::Notification::create("An error occurred while updating Creator Points.", geode::NotificationIcon::Error, 2.5)->show();
+                    }
+                });
+
+                // Set filter for the listener
+                m_fields->m_listener.setFilter(request.post(url));
             } else {
-                cpIcon->setPosition({winSize.width - 18, winSize.height - 117});
+                log::debug("Invalid account ID.");
             }
-            cpIcon->setAnchorPoint({0.5, 0.5});
-            cpIcon->setID("cp-icon");
-            menu->addChild(cpIcon);
-            menu->setID("cp-menu");
-
-            refreshCP(nullptr);
         }
 
         if (tapLockHint) {

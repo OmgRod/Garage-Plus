@@ -2,6 +2,12 @@ All versions v1.4.0 and beyond are for 2.206. Geode, at the time of writing this
 
 Also, download missing versions on [GitHub](https://github.com/OmgRod/Garage-Plus/releases)
 
+# v1.6.1
+
+- Updated to use Capeling's Garage Stats API
+- Deprecated Demons in Garage (praise Capeling)
+- Removed advanced stats and CP refresh (may come in another update idk)
+
 # v1.6.0
 
 - Clarified feedback menu title

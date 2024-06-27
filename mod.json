@@ -1,6 +1,6 @@
 {
-	"geode": "3.0.0",
-	"version": "v1.6.0",
+	"geode": "3.1.1",
+	"version": "v1.6.1",
 	"gd": {
 		"win": "2.206",
 		"android": "2.206"
@@ -19,12 +19,6 @@
 		]
 	},
 	"settings": {
-		"demons": {
-            "name": "Demons",
-            "description": "Demons show up in the garage.",
-            "type": "bool",
-            "default": true
-        },
 		"cp": {
             "name": "Creator Points",
             "description": "Creator Points show up in the garage. Click the CP icon to refresh. (Only available to people logged in)",
@@ -43,12 +37,6 @@
             "type": "bool",
             "default": true
         },
-		"advanced-stats": {
-            "name": "Advanced Stats",
-            "description": "Displays advenced stats when clicking icons such as demons and stars (like when you open your profile and click them.)",
-            "type": "bool",
-            "default": true
-        },
 		"feedback": {
             "name": "Feedback Button",
             "description": "Disable this to remove the feedback button.",
@@ -63,6 +51,11 @@
 	"dependencies": [{
 		"id": "geode.node-ids",
 		"version": ">=v1.12.0-beta.2",
+		"importance": "required"
+	},
+	{
+		"id": "capeling.garage-stats-menu",
+		"version": ">=v1.0.1",
 		"importance": "required"
 	}],
 	"issues": {
