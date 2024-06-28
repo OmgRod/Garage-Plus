@@ -1,6 +1,7 @@
 # Garage Plus
 
 ![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/w/OmgRod/Garage-Plus/main)
+[![Static Badge](https://img.shields.io/badge/Download-Latest-success?link=https%3A%2F%2Fgithub.com%2FOmgRod%2FGarage-Plus%2Freleases%2Flatest)](https://github.com/OmgRod/Garage-Plus/releases/latest)
 
 # Features
 
