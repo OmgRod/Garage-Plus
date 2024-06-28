@@ -1,5 +1,7 @@
 # Garage Plus
 
+![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/w/OmgRod/Garage-Plus/main)
+
 # Features
 
 - <cy>Removes lock hint</c> above icon kit
