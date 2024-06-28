@@ -14,7 +14,7 @@
 #include <capeling.garage-stats-menu/include/StatsDisplayAPI.h>
 
 #include "GPFeedbackLayer.hpp"
-#include "MyLayer.hpp"
+#include "GPSceneManager.hpp"
 
 // Code stuffs
 
@@ -57,64 +57,7 @@ class $modify(GJGarageLayerModified, GJGarageLayer) {
         } */
 
         if (cp) {
-            // Credits to Capeling for this code (CP in Garage)
-
-            auto statMenu = this->getChildByID("capeling.garage-stats-menu/stats-menu");
-    
-            // Fetch user information from the server
-            int accID = GJAccountManager::get()->m_accountID;
-            if (accID != 0) {
-                std::string url = "https://www.boomlings.com/database/getGJUserInfo20.php";
-                std::string secret = "Wmfd2893gb7";
-                std::string targetAccountID = std::to_string(accID);
-
-                web::WebRequest request;
-                request.bodyString("secret=" + secret + "&targetAccountID=" + targetAccountID);
-                request.userAgent("");
-
-                // Callback function for handling web request response
-                m_fields->m_listener.bind([=](web::WebTask::Event* e) {
-                    if (web::WebResponse* res = e->getValue()) {
-                        if (res->ok()) {
-                            std::string responseBody = res->string().unwrap();
-                            size_t start_pos = responseBody.find(":8:");
-                            if (start_pos != std::string::npos) {
-                                size_t end_pos = responseBody.find(":", start_pos + 3);
-                                if (end_pos != std::string::npos) {
-                                    auto myStatItem = StatsDisplayAPI::getNewItem(
-                                        "creator-points"_spr, 
-                                        CCSprite::create("GaragePlus_cpIcon.png"_spr), 
-                                        std::stoi(responseBody.substr(start_pos + 3, end_pos - start_pos - 3)), 
-                                        1.f
-                                    );
-
-                                    if (statMenu) {
-                                        statMenu->addChild(myStatItem);
-                                        statMenu->updateLayout();
-                                    }
-                                } else {
-                                    log::error("Failed to find ':' after ':8:' in response: {}", responseBody);
-                                    geode::Notification::create("An error occurred while updating Creator Points.", geode::NotificationIcon::Error, 2.5)->show();
-                                }
-                            } else {
-                                log::error("Failed to find ':8:' in response: {}", responseBody);
-                                geode::Notification::create("An error occurred while updating Creator Points.", geode::NotificationIcon::Error, 2.5)->show();
-                            }
-                        } else {
-                            log::error("Request failed with status code: {}", res->code());
-                            geode::Notification::create("An error occurred while updating Creator Points.", geode::NotificationIcon::Error, 2.5)->show();
-                        }
-                    } else if (e->isCancelled()) {
-                        log::error("The request was cancelled.");
-                        geode::Notification::create("An error occurred while updating Creator Points.", geode::NotificationIcon::Error, 2.5)->show();
-                    }
-                });
-
-                // Set filter for the listener
-                m_fields->m_listener.setFilter(request.post(url));
-            } else {
-                log::debug("Invalid account ID.");
-            }
+            GJGarageLayerModified::refreshCP(nullptr, false);
         }
 
         if (tapLockHint) {
@@ -165,7 +108,7 @@ class $modify(GJGarageLayerModified, GJGarageLayer) {
                 this->addChild(buttonsMenu);
 
                 auto modSettingsIcon = CCSprite::create("GaragePlus_modSettingsBtn.png"_spr);
-                auto modSettingsBtn = CCMenuItemSpriteExtra::create(modSettingsIcon, this, menu_selector(MyLayer::onModSettings));
+                auto modSettingsBtn = CCMenuItemSpriteExtra::create(modSettingsIcon, this, menu_selector(GPSceneManager::onModSettings));
                 modSettingsBtn->setID("mod-settings");
                 buttonsMenu->addChild(modSettingsBtn);
 
@@ -176,14 +119,14 @@ class $modify(GJGarageLayerModified, GJGarageLayer) {
 
                 if (feedback) {
                     auto feedbackIcon = CCSprite::create("GaragePlus_feedbackBtn.png"_spr);
-                    auto feedbackBtn = CCMenuItemSpriteExtra::create(feedbackIcon, this, menu_selector(MyLayer::onFeedbackBtn));
+                    auto feedbackBtn = CCMenuItemSpriteExtra::create(feedbackIcon, this, menu_selector(GPSceneManager::onFeedbackBtn));
                     feedbackBtn->setID("feedback");
                     buttonsMenu->addChild(feedbackBtn);
                 }
 
                 // auto creatorBtnIcon = CCSprite::create("GaragePlus_creatorBtn.png"_spr);
                 // auto creatorBtn = CCMenuItemSpriteExtra::create(
-                //     creatorBtnIcon, this, menu_selector(MyLayer::onDisabled) // MyLayer::onClick
+                //     creatorBtnIcon, this, menu_selector(GPSceneManager::onDisabled) // GPSceneManager::onClick
                 // );
                 // creatorBtn->setID("creator");
                 // buttonsMenu->addChild(creatorBtn);
@@ -194,7 +137,7 @@ class $modify(GJGarageLayerModified, GJGarageLayer) {
                 buttonsMenu->addChild(profileBtn);
 
                 // auto demonIconsIcon = CCSprite::create("GaragePlus_demonKeysBtn.png"_spr);
-                // auto demonIconsBtn = CCMenuItemSpriteExtra::create(demonIconsIcon, this, menu_selector(MyLayer::onDisabled));
+                // auto demonIconsBtn = CCMenuItemSpriteExtra::create(demonIconsIcon, this, menu_selector(GPSceneManager::onDisabled));
                 // demonIconsBtn->setID("demon-icons-btn");
                 // buttonsMenu->addChild(demonIconsBtn);
 
@@ -205,80 +148,84 @@ class $modify(GJGarageLayerModified, GJGarageLayer) {
         return true;
     }
 
-void refreshCP(CCObject* sender) {
-    // Check if demonIcon exists
-    auto demonIcon = this->getChildByID("cp-menu")->getChildByID("cp-icon");
-    this->removeChildByID("cp-label");
-    if (!demonIcon) {
-        log::debug("Error: 'cp-icon' not found.");
-        return;
+    void refreshCPWrapper(CCObject* sender) {
+        this->refreshCP(sender, true);
     }
 
-    // Fetch user information from the server
-    int accID = GJAccountManager::get()->m_accountID;
-    if (accID != 0) {
-        std::string url = "https://www.boomlings.com/database/getGJUserInfo20.php";
-        std::string secret = "Wmfd2893gb7";
-        std::string targetAccountID = std::to_string(accID);
 
-        web::WebRequest request;
-        request.bodyString("secret=" + secret + "&targetAccountID=" + targetAccountID);
-        request.userAgent("");
+    void refreshCP(CCObject* sender, bool notifySuccess = false) {
+        // Credits to Capeling for this code (CP in Garage)
+        
+        auto statMenu = this->getChildByID("capeling.garage-stats-menu/stats-menu");
+        statMenu->removeChildByID("omgrod.garage_plus/creator-points-container");
+        
+        // Fetch user information from the server
+        int accID = GJAccountManager::get()->m_accountID;
+        if (accID != 0) {
+            std::string url = "https://www.boomlings.com/database/getGJUserInfo20.php";
+            std::string secret = "Wmfd2893gb7";
+            std::string targetAccountID = std::to_string(accID);
 
-        // Callback function for handling web request response
-        m_fields->m_listener.bind([=](web::WebTask::Event* e) {
-            if (web::WebResponse* res = e->getValue()) {
-                if (res->ok()) {
-                    std::string responseBody = res->string().unwrap();
-                    size_t start_pos = responseBody.find(":8:");
-                    if (start_pos != std::string::npos) {
-                        size_t end_pos = responseBody.find(":", start_pos + 3);
-                        if (end_pos != std::string::npos) {
-                            std::string pointsStr = responseBody.substr(start_pos + 3, end_pos - start_pos - 3);
-                            try {
-                                int creatorPoints = std::stoi(pointsStr);
-                                // Create and add CP label
-                                auto cpText = CCLabelBMFont::create(pointsStr.c_str(), "bigFont.fnt");
-                                cpText->setPosition({demonIcon->getPositionX() - 12.f, demonIcon->getPositionY()});
-                                cpText->setScale(0.34);
-                                cpText->setAnchorPoint({1, 0.5});
-                                cpText->setID("cp-label");
-                                this->addChild(cpText);
-                                this->updateLayout();
+            web::WebRequest request;
+            request.bodyString("secret=" + secret + "&targetAccountID=" + targetAccountID);
+            request.userAgent("");
 
-                                // to all people in #dev-chat, i removed it
-                                // and i un-abbreviated it
-                                //  AND I BELIEVE I FIXED THE LOGGING STUFF
-                                // im so stupid ngl
+            // Callback function for handling web request response
+            m_fields->m_listener.bind([=](web::WebTask::Event* e) {
+                if (web::WebResponse* res = e->getValue()) {
+                    if (res->ok()) {
+                        std::string responseBody = res->string().unwrap();
+                        size_t start_pos = responseBody.find(":8:");
+                        if (start_pos != std::string::npos) {
+                            size_t end_pos = responseBody.find(":", start_pos + 3);
+                            if (end_pos != std::string::npos) {
+                                auto myStatItem = StatsDisplayAPI::getNewItem(
+                                    "creator-points"_spr, 
+                                    CCSprite::create("GaragePlus_cpIcon.png"_spr), 
+                                    std::stoi(responseBody.substr(start_pos + 3, end_pos - start_pos - 3)), 
+                                    1.f
+                                );
 
-                                // geode::Notification::create("CP updated.", geode::NotificationIcon::Success, 2.5)->show();
-                            } catch (const std::invalid_argument& e) {
-                                log::error("Failed to convert creator points to integer: {}", e.what());
+                                if (statMenu) {
+                                    auto btn = CCMenuItemSpriteExtra::create(
+                                        CCSprite::create("GaragePlus_cpIcon.png"_spr),
+                                        this,
+                                        menu_selector(GJGarageLayerModified::refreshCPWrapper)
+                                    );
+                                    btn->setID("creator-points-icon");
+
+                                    myStatItem->removeChildByID("creator-points-icon");
+                                    myStatItem->addChild(btn);
+                                    statMenu->addChild(myStatItem);
+                                    statMenu->updateLayout();
+
+                                    // Check if notifySuccess param is passed and is true
+                                    if (notifySuccess) {
+                                        geode::Notification::create("Creator Points successfully updated.", geode::NotificationIcon::Success, 2.5)->show();
+                                    }
+                                }
+                            } else {
+                                log::error("Failed to find ':' after ':8:' in response: {}", responseBody);
                                 geode::Notification::create("An error occurred while updating Creator Points.", geode::NotificationIcon::Error, 2.5)->show();
                             }
                         } else {
-                            log::error("Failed to find ':' after ':8:' in response: {}", responseBody);
+                            log::error("Failed to find ':8:' in response: {}", responseBody);
                             geode::Notification::create("An error occurred while updating Creator Points.", geode::NotificationIcon::Error, 2.5)->show();
                         }
                     } else {
-                        log::error("Failed to find ':8:' in response: {}", responseBody);
+                        log::error("Request failed with status code: {}", res->code());
                         geode::Notification::create("An error occurred while updating Creator Points.", geode::NotificationIcon::Error, 2.5)->show();
                     }
-                } else {
-                    log::error("Request failed with status code: {}", res->code());
+                } else if (e->isCancelled()) {
+                    log::error("The request was cancelled.");
                     geode::Notification::create("An error occurred while updating Creator Points.", geode::NotificationIcon::Error, 2.5)->show();
                 }
-            } else if (e->isCancelled()) {
-                log::error("The request was cancelled.");
-                geode::Notification::create("An error occurred while updating Creator Points.", geode::NotificationIcon::Error, 2.5)->show();
-            }
-        });
+            });
 
-        // Set filter for the listener
-        m_fields->m_listener.setFilter(request.post(url));
-    } else {
-        log::debug("Invalid account ID.");
+            // Set filter for the listener
+            m_fields->m_listener.setFilter(request.post(url));
+        } else {
+            log::debug("Invalid account ID.");
+        }
     }
-    demonIcon->setVisible(true);
-}
 };

@@ -9,7 +9,7 @@
 
 using namespace geode::prelude;
 
-class MyLayer : public CCLayer
+class GPSceneManager : public CCLayer
 {
 public:
     struct Fields {
@@ -20,22 +20,22 @@ private:
     Fields* m_fields;
 
 public:
-    MyLayer() : m_fields(new Fields()) {}
+    GPSceneManager() : m_fields(new Fields()) {}
 
-    ~MyLayer() {
+    ~GPSceneManager() {
         delete m_fields;
     }
 
     static CCScene* scene()
     {
         auto scene = CCScene::create();
-        scene->addChild(MyLayer::create());
+        scene->addChild(GPSceneManager::create());
         return scene;
     }
 
-    static MyLayer* create()
+    static GPSceneManager* create()
     {
-        MyLayer* ret = new MyLayer();
+        GPSceneManager* ret = new GPSceneManager();
         if (ret && ret->init())
         {
             ret->autorelease();
@@ -55,7 +55,7 @@ public:
 
     void onClick(CCObject* sender)
     {
-        auto scenePrev = CCTransitionFade::create(0.5f, MyLayer::scene());
+        auto scenePrev = CCTransitionFade::create(0.5f, GPSceneManager::scene());
         CCDirector::sharedDirector()->replaceScene(scenePrev);
     }
 
