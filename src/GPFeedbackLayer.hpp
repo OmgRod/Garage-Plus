@@ -12,6 +12,10 @@ using namespace geode::prelude;
 
 class GPFeedbackLayer : public CCLayer {
 public:
+    virtual void KeyBackClicked() {
+        CCDirector::get()->popScene();
+    }
+
     static CCScene* scene() {
         auto scene = CCScene::create();
         scene->addChild(GPFeedbackLayer::create());
@@ -100,6 +104,8 @@ m_listener.setFilter(request.post(url));
     bool init() {
         if (!CCLayer::init())
             return false;
+
+        setKeypadEnabled(true);
 
         auto winSize = CCDirector::sharedDirector()->getWinSize();
         auto menu = CCMenu::create();

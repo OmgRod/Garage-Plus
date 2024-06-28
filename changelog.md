@@ -1,12 +1,15 @@
-All versions v1.4.0 and beyond are for 2.206. Geode, at the time of writing this, isn't publicly available for 2.206. If you want to use later versions, download Geode for 2.206 at https://github.com/geode-sdk/geode/releases/nightly
+# v1.6.2
 
-Also, download missing versions on [GitHub](https://github.com/OmgRod/Garage-Plus/releases)
+- Re-added CP refresh + success notifications (only when icon clicked)
+- Bugfixes:
+    - Now able to press "Esc" key to leave GPFeedbackLayer
 
 # v1.6.1
 
 - Updated to use Capeling's Garage Stats API
 - Deprecated Demons in Garage (praise Capeling)
 - Removed advanced stats and CP refresh (may come in another update idk)
+- Separate Dual Icons fix (you can stop complaining now Weebifying)
 
 # v1.6.0
 
