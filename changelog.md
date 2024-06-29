@@ -1,3 +1,9 @@
+# v2.0.0
+
+- Added new tags: "content" and "offline"
+- Bugfixes:
+    - Separate Dual Icons mod - Moved down hitboxes and arrows (i forgot)
+
 # v1.6.2
 
 - Re-added CP refresh + success notifications (only when icon clicked)

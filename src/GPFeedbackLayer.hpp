@@ -6,7 +6,6 @@
 #include <Geode/utils/web.hpp>
 #include <Geode/ui/GeodeUI.hpp>
 #include <Geode/ui/Notification.hpp>
-// #include "MyLayer.hpp"
 
 using namespace geode::prelude;
 
@@ -67,39 +66,39 @@ public:
 
     std::string payload = "{\"username\": \"" + username + "\", \"feedback\": \"" + feedback + "\"}";
 
-web::WebRequest request;
-request.header("Content-Type", "application/json");
-request.bodyString(payload);
-request.timeout(std::chrono::seconds(30));
+    web::WebRequest request;
+    request.header("Content-Type", "application/json");
+    request.bodyString(payload);
+    request.timeout(std::chrono::seconds(30));
 
-std::string url = "https://script.google.com/macros/s/AKfycbypWwhGgrokYp1_5SaOw6Pp_Y2_9XuZh5ayXIFncIrvK0uTmvZmrQ6ff1f2bYFYVj2Vgg/exec"; // Replace with your Google Apps Script web app URL
+    std::string url = "https://script.google.com/macros/s/AKfycbypWwhGgrokYp1_5SaOw6Pp_Y2_9XuZh5ayXIFncIrvK0uTmvZmrQ6ff1f2bYFYVj2Vgg/exec"; // Replace with your Google Apps Script web app URL
 
-m_listener.bind([this](web::WebTask::Event* e) {
-    if (web::WebResponse* res = e->getValue()) {
-        if (res->ok()) {
-            log::debug("Feedback sent successfully!");
-            geode::createQuickPopup(
-                "Garage Plus",
-                "Feedback sent successfully!",
-                "Exit", nullptr,
-                [this](auto, bool btn1) {
-                    this->onClick(nullptr);
-                }
-            );
-        } else {
-            log::error("Request failed with status code: {}", res->code());
-            log::error("Response body: {}", res->string().unwrapOr("No response body"));
+    m_listener.bind([this](web::WebTask::Event* e) {
+        if (web::WebResponse* res = e->getValue()) {
+            if (res->ok()) {
+                log::debug("Feedback sent successfully!");
+                geode::createQuickPopup(
+                    "Garage Plus",
+                    "Feedback sent successfully!",
+                    "Exit", nullptr,
+                    [this](auto, bool btn1) {
+                        this->onClick(nullptr);
+                    }
+                );
+            } else {
+                log::error("Request failed with status code: {}", res->code());
+                log::error("Response body: {}", res->string().unwrapOr("No response body"));
+            }
+        } else if (web::WebProgress* progress = e->getProgress()) {
+            // log::debug("Progress: ", progress->downloadProgress());
+        } else if (e->isCancelled()) {
+            log::error("The request was cancelled.");
         }
-    } else if (web::WebProgress* progress = e->getProgress()) {
-        // log::debug("Progress: ", progress->downloadProgress());
-    } else if (e->isCancelled()) {
-        log::error("The request was cancelled.");
-    }
-});
+    });
 
-log::debug("Sending POST request to URL: {}", url);
-m_listener.setFilter(request.post(url));
-}
+    log::debug("Sending POST request to URL: {}", url);
+    m_listener.setFilter(request.post(url));
+    }
 
     bool init() {
         if (!CCLayer::init())

@@ -72,6 +72,9 @@ class $modify(GJGarageLayerModified, GJGarageLayer) {
                 this->getChildByID("player-icon")->setPositionY(this->getChildByID("player-icon")->getPositionY() - (winSize.height / 12));
                 if (Loader::get()->isModLoaded("weebify.separate_dual_icons")) {
                     this->getChildByID("player2-icon")->setPositionY(this->getChildByID("player2-icon")->getPositionY() - (winSize.height / 12));
+                    this->getChildByID("player-buttons-menu")->setPositionY(this->getChildByID("player-buttons-menu")->getPositionY() - (winSize.height / 12));
+                    this->getChildByID("arrow-1")->setPositionY(this->getChildByID("arrow-1")->getPositionY() - (winSize.height / 12));
+                    this->getChildByID("arrow-2")->setPositionY(this->getChildByID("arrow-2")->getPositionY() - (winSize.height / 12));
                     log::debug("Separate Dual Icons mod loaded D:");
                 }
                 this->getChildByID("username-label")->setPositionY(this->getChildByID("username-label")->getPositionY() - (winSize.height / 12));
