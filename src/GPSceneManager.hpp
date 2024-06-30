@@ -26,13 +26,6 @@ public:
         delete m_fields;
     }
 
-    static CCScene* scene()
-    {
-        auto scene = CCScene::create();
-        scene->addChild(GPSceneManager::create());
-        return scene;
-    }
-
     static GPSceneManager* create()
     {
         GPSceneManager* ret = new GPSceneManager();
@@ -51,12 +44,6 @@ public:
             return false;
 
         return true;
-    }
-
-    void onClick(CCObject* sender)
-    {
-        auto scenePrev = CCTransitionFade::create(0.5f, GPSceneManager::scene());
-        CCDirector::sharedDirector()->replaceScene(scenePrev);
     }
 
     void onModSettings(CCObject* sender)

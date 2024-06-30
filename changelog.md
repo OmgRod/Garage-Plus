@@ -1,8 +1,12 @@
 # v2.0.0
 
 - Added new tags: "content" and "offline"
+- Added Demon Keys to garage
+- Added [Ko-Fi](https://ko-fi.com/omgrod) button (please support the creation of this mod)
 - Bugfixes:
-    - Separate Dual Icons mod - Moved down hitboxes and arrows (i forgot)
+    - Separate Dual Icons mod - Moved down hitboxes and arrows
+
+Dev Note: I can't figure out the issue with the success popup in `GPFeedbackLayer` so if any devs here want to help out, I would greatly appreciate it!
 
 # v1.6.2
 
@@ -13,9 +17,9 @@
 # v1.6.1
 
 - Updated to use Capeling's Garage Stats API
-- Deprecated Demons in Garage (praise Capeling)
-- Removed advanced stats and CP refresh (may come in another update idk)
-- Separate Dual Icons fix (you can stop complaining now Weebifying)
+- Deprecated Demons in Garage
+- Removed advanced stats and CP refresh
+- Separate Dual Icons fix
 
 # v1.6.0
 
@@ -66,7 +70,7 @@
 # v1.2.3
 
 - Small optimisations
-- Removed support for MacOS and Android64 (they are unusable)
+- Removed support for MacOS and Android64
 
 # v1.2.2
 
@@ -80,8 +84,8 @@
 # v1.2.0
 
 - Added top buttons setting
-- Added mod settings shortcut (top button)
-- Added feedback button (doesn't work yet + top button)
+- Added mod settings shortcut (top buttons)
+- Added feedback button (doesn't work yet + top buttons)
 
 # v1.1.0
 

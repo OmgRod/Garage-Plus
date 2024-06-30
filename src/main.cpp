@@ -1,5 +1,3 @@
-// Headers
-
 #include <chrono>
 #include <iostream>
 
@@ -15,8 +13,6 @@
 
 #include "GPFeedbackLayer.hpp"
 #include "GPSceneManager.hpp"
-
-// Code stuffs
 
 using namespace geode::prelude;
 
@@ -38,34 +34,34 @@ class $modify(GJGarageLayerModified, GJGarageLayer) {
         auto tapLockHint = Mod::get()->getSettingValue<bool>("no-lock-hint");
         auto topBtns = Mod::get()->getSettingValue<bool>("top-buttons");
         auto feedback = Mod::get()->getSettingValue<bool>("feedback");
+        auto demonKeys = Mod::get()->getSettingValue<bool>("demon-keys");
 
         auto winSize = CCDirector::sharedDirector()->getWinSize();
 
-        /* if (demons) {
-            // Credits to Capeling for this code (Demons in Garage)
-
-            // Deprecated stuff (sorry!)
-
-            // auto statMenu = this->getChildByID("capeling.garage-stats-menu/stats-menu");
-
-            // auto myStatItem = StatsDisplayAPI::getNewItem("demons"_spr, CCSprite::create("GaragePlus_demonIcon.png"_spr), GameStatsManager::sharedState()->getStat("5"), 1.f);
-
-            // if (statMenu) {
-            //     statMenu->addChild(myStatItem);
-            //     statMenu->updateLayout();
-            // }
-        } */
-
         if (cp) {
             GJGarageLayerModified::refreshCP(nullptr, false);
+        }
+
+        if (demonKeys) {
+            auto statMenu = this->getChildByID("capeling.garage-stats-menu/stats-menu");
+            
+            auto myStatItem = StatsDisplayAPI::getNewItem(
+                "demon-keys"_spr,
+                CCSprite::createWithSpriteFrameName("GJ_bigKey_001.png"),
+                GameStatsManager::sharedState()->getStat("21"),
+                0.375
+            );
+
+            if (statMenu) {
+                statMenu->addChild(myStatItem);
+                statMenu->updateLayout();
+            }
         }
 
         if (tapLockHint) {
             this->removeChildByID("tap-more-hint");
 
             if (topBtns) {
-
-                // Shift elements down for space
 
                 this->getChildByID("category-menu")->setPositionY(this->getChildByID("category-menu")->getPositionY() - (winSize.height / 12));
                 this->getChildByID("floor-line")->setPositionY(this->getChildByID("floor-line")->getPositionY() - (winSize.height / 12));
@@ -78,30 +74,24 @@ class $modify(GJGarageLayerModified, GJGarageLayer) {
                     log::debug("Separate Dual Icons mod loaded D:");
                 }
                 this->getChildByID("username-label")->setPositionY(this->getChildByID("username-label")->getPositionY() - (winSize.height / 12));
+                
                 try {
-    // Retrieve the pointer to the "username-lock" child
-    auto usernameLock = this->getChildByID("username-lock");
-    
-    // Check if the pointer is valid
-    if (usernameLock == nullptr) {
-        throw std::runtime_error("Error: username-lock not found");
-    }
-    
-    // Retrieve the current position Y
-    float currentPosY = usernameLock->getPositionY();
-    
-    // Calculate the new position Y
-    float newPosY = currentPosY - (winSize.height / 12);
-    
-    // Set the new position Y
-    usernameLock->setPositionY(newPosY);
+                    auto usernameLock = this->getChildByID("username-lock");
 
-} catch (const std::exception& e) {
-    // Handle the error appropriately
-    log::error("Exception caught: {}", e.what());
-}
+                    if (usernameLock == nullptr) {
+                        throw std::runtime_error("Error: username-lock not found");
+                    }
 
-                // Top buttons bar
+                    float currentPosY = usernameLock->getPositionY();
+
+                    float newPosY = currentPosY - (winSize.height / 12);
+
+                    usernameLock->setPositionY(newPosY);
+
+                } catch (const std::exception& e) {
+
+                    log::error("Exception caught: {}", e.what());
+                }
 
                 auto buttonsMenu = CCMenu::create();
                 buttonsMenu->setID("top-buttons");
@@ -127,22 +117,17 @@ class $modify(GJGarageLayerModified, GJGarageLayer) {
                     buttonsMenu->addChild(feedbackBtn);
                 }
 
-                // auto creatorBtnIcon = CCSprite::create("GaragePlus_creatorBtn.png"_spr);
-                // auto creatorBtn = CCMenuItemSpriteExtra::create(
-                //     creatorBtnIcon, this, menu_selector(GPSceneManager::onDisabled) // GPSceneManager::onClick
-                // );
-                // creatorBtn->setID("creator");
-                // buttonsMenu->addChild(creatorBtn);
+                /* auto creatorBtnIcon = CCSprite::create("GaragePlus_creatorBtn.png"_spr);
+                auto creatorBtn = CCMenuItemSpriteExtra::create(
+                    creatorBtnIcon, this, menu_selector(MenuLayer::onCreator)
+                );
+                creatorBtn->setID("creator");
+                buttonsMenu->addChild(creatorBtn); */
 
                 auto profileIcon = CCSprite::create("GaragePlus_profileBtn.png"_spr);
                 auto profileBtn = CCMenuItemSpriteExtra::create(profileIcon, this, menu_selector(MenuLayer::onMyProfile));
                 profileBtn->setID("profile");
                 buttonsMenu->addChild(profileBtn);
-
-                // auto demonIconsIcon = CCSprite::create("GaragePlus_demonKeysBtn.png"_spr);
-                // auto demonIconsBtn = CCMenuItemSpriteExtra::create(demonIconsIcon, this, menu_selector(GPSceneManager::onDisabled));
-                // demonIconsBtn->setID("demon-icons-btn");
-                // buttonsMenu->addChild(demonIconsBtn);
 
                 buttonsMenu->updateLayout();
             }
@@ -155,14 +140,11 @@ class $modify(GJGarageLayerModified, GJGarageLayer) {
         this->refreshCP(sender, true);
     }
 
-
     void refreshCP(CCObject* sender, bool notifySuccess = false) {
-        // Credits to Capeling for this code (CP in Garage)
-        
+
         auto statMenu = this->getChildByID("capeling.garage-stats-menu/stats-menu");
         statMenu->removeChildByID("omgrod.garage_plus/creator-points-container");
-        
-        // Fetch user information from the server
+
         int accID = GJAccountManager::get()->m_accountID;
         if (accID != 0) {
             std::string url = "https://www.boomlings.com/database/getGJUserInfo20.php";
@@ -173,7 +155,6 @@ class $modify(GJGarageLayerModified, GJGarageLayer) {
             request.bodyString("secret=" + secret + "&targetAccountID=" + targetAccountID);
             request.userAgent("");
 
-            // Callback function for handling web request response
             m_fields->m_listener.bind([=](web::WebTask::Event* e) {
                 if (web::WebResponse* res = e->getValue()) {
                     if (res->ok()) {
@@ -202,7 +183,6 @@ class $modify(GJGarageLayerModified, GJGarageLayer) {
                                     statMenu->addChild(myStatItem);
                                     statMenu->updateLayout();
 
-                                    // Check if notifySuccess param is passed and is true
                                     if (notifySuccess) {
                                         geode::Notification::create("Creator Points successfully updated.", geode::NotificationIcon::Success, 2.5)->show();
                                     }
@@ -225,7 +205,6 @@ class $modify(GJGarageLayerModified, GJGarageLayer) {
                 }
             });
 
-            // Set filter for the listener
             m_fields->m_listener.setFilter(request.post(url));
         } else {
             log::debug("Invalid account ID.");

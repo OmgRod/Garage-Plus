@@ -11,6 +11,10 @@ using namespace geode::prelude;
 
 class GPFeedbackLayer : public CCLayer {
 public:
+    struct Fields {
+        EventListener<web::WebTask> m_listener;
+    };
+
     virtual void KeyBackClicked() {
         CCDirector::get()->popScene();
     }
@@ -42,62 +46,62 @@ public:
     }
 
     void onFeedbackClick(CCObject* sender) {
-    auto descInput = dynamic_cast<CCTextInputNode*>(this->getChildByID("descInput"));
-    if (!descInput)
-        return;
+        auto descInput = dynamic_cast<CCTextInputNode*>(this->getChildByID("descInput"));
+        if (!descInput)
+            return;
 
-    std::string feedback = descInput->getString();
-    std::string username = "Anonymous";
+        std::string feedback = descInput->getString();
+        std::string username = "Anonymous";
 
-    if (GJAccountManager::get()->m_accountID != 0) {
-        username = std::string(GJAccountManager::get()->m_username.c_str());
-    }
-
-    if (feedback.empty()) {
-        log::error("Feedback cannot be empty.");
-        geode::createQuickPopup(
-            "Garage Plus",
-            "Feedback cannot be empty.",
-            "OK", nullptr,
-            nullptr // No action on Exit button click
-        );
-        return;
-    }
-
-    std::string payload = "{\"username\": \"" + username + "\", \"feedback\": \"" + feedback + "\"}";
-
-    web::WebRequest request;
-    request.header("Content-Type", "application/json");
-    request.bodyString(payload);
-    request.timeout(std::chrono::seconds(30));
-
-    std::string url = "https://script.google.com/macros/s/AKfycbypWwhGgrokYp1_5SaOw6Pp_Y2_9XuZh5ayXIFncIrvK0uTmvZmrQ6ff1f2bYFYVj2Vgg/exec"; // Replace with your Google Apps Script web app URL
-
-    m_listener.bind([this](web::WebTask::Event* e) {
-        if (web::WebResponse* res = e->getValue()) {
-            if (res->ok()) {
-                log::debug("Feedback sent successfully!");
-                geode::createQuickPopup(
-                    "Garage Plus",
-                    "Feedback sent successfully!",
-                    "Exit", nullptr,
-                    [this](auto, bool btn1) {
-                        this->onClick(nullptr);
-                    }
-                );
-            } else {
-                log::error("Request failed with status code: {}", res->code());
-                log::error("Response body: {}", res->string().unwrapOr("No response body"));
-            }
-        } else if (web::WebProgress* progress = e->getProgress()) {
-            // log::debug("Progress: ", progress->downloadProgress());
-        } else if (e->isCancelled()) {
-            log::error("The request was cancelled.");
+        if (GJAccountManager::get()->m_accountID != 0) {
+            username = std::string(GJAccountManager::get()->m_username.c_str());
         }
-    });
 
-    log::debug("Sending POST request to URL: {}", url);
-    m_listener.setFilter(request.post(url));
+        if (feedback.empty()) {
+            log::error("Feedback cannot be empty.");
+            geode::createQuickPopup(
+                "Garage Plus",
+                "Feedback cannot be empty.",
+                "OK", nullptr,
+                nullptr // No action on Exit button click
+            );
+            return;
+        }
+
+        std::string payload = "{\"username\": \"" + username + "\", \"feedback\": \"" + feedback + "\"}";
+
+        web::WebRequest request;
+        request.header("Content-Type", "application/json");
+        request.bodyString(payload);
+        request.timeout(std::chrono::seconds(30));
+
+        std::string url = "https://script.google.com/macros/s/AKfycbypWwhGgrokYp1_5SaOw6Pp_Y2_9XuZh5ayXIFncIrvK0uTmvZmrQ6ff1f2bYFYVj2Vgg/exec"; // Replace with your Google Apps Script web app URL
+
+        m_listener.bind([this](web::WebTask::Event* e) {
+            if (web::WebResponse* res = e->getValue()) {
+                if (res->ok()) {
+                    log::debug("Feedback sent successfully!");
+                    geode::createQuickPopup(
+                        "Garage Plus",
+                        "Feedback sent successfully!",
+                        "Exit", nullptr,
+                        [this](auto, bool btn1) {
+                            this->onClick(nullptr);
+                        }
+                    );
+                } else {
+                    log::error("Request failed with status code: {}", res->code());
+                    log::error("Response body: {}", res->string().unwrapOr("No response body"));
+                }
+            } else if (web::WebProgress* progress = e->getProgress()) {
+                // log::debug("Progress: ", progress->downloadProgress());
+            } else if (e->isCancelled()) {
+                log::error("The request was cancelled.");
+            }
+        });
+
+        log::debug("Sending POST request to URL: {}", url);
+        m_listener.setFilter(request.post(url));
     }
 
     bool init() {
@@ -196,19 +200,18 @@ public:
     }
 
     void onInfoClick(CCObject* sender) {
-auto winSize = CCDirector::sharedDirector()->getWinSize();
+        auto winSize = CCDirector::sharedDirector()->getWinSize();
         FLAlertLayer::create(
-    nullptr, // No delegate needed
-    "Garage Plus", // Title
-    "By submitting your feedback, you agree to the collection and transmission of your username and feedback to a private spreadsheet accessible only to the developer of this mod, OmgRod. This data will be used solely for improving the mod.\n\nYou may disable the feedback button in this mod's settings at any time to add extra space.\n\nYour data will be stored securely and will not be shared with third parties.\n\nThank you for your feedback!\n\n-OmgRod", // Description
-    "OK", // Button 1 (OK)
-    nullptr, // Button 2 (no second button)
-    winSize.width * 0.75, // Width (adjust as necessary)
-    true, // Scrolling enabled
-    winSize.height * 0.75, // Height (adjust as necessary)
-    1.0f // Text scale (adjust as necessary)
-)->show();
-
+            nullptr, // No delegate needed
+            "Garage Plus", // Title
+            "By submitting your feedback, you agree to the collection and transmission of your username and feedback to a private spreadsheet accessible only to the developer of this mod, OmgRod. This data will be used solely for improving the mod.\n\nYou may disable the feedback button in this mod's settings at any time to add extra space.\n\nYour data will be stored securely and will not be shared with third parties.\n\nThank you for your feedback!\n\n-OmgRod", // Description
+            "OK", // Button 1 (OK)
+            nullptr, // Button 2 (no second button)
+            winSize.width * 0.75, // Width (adjust as necessary)
+            true, // Scrolling enabled
+            winSize.height * 0.75, // Height (adjust as necessary)
+            1.0f // Text scale (adjust as necessary)
+        )->show();
     }
 
 private:

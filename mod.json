@@ -1,20 +1,17 @@
 {
 	"geode": "3.1.1",
-	"version": "v2.0.0-alpha.1",
+	"version": "v2.0.0-alpha.2",
 	"gd": {
 		"win": "2.206",
 		"android": "2.206"
 	},
 	"resources": {
 		"sprites": [
-			"resources/GaragePlus_modSettingsBtn.png",
-			"resources/GaragePlus_gameSettingsBtn.png",
-			"resources/GaragePlus_creatorBtn.png",
-			"resources/GaragePlus_feedbackBtn.png",
-			"resources/GaragePlus_profileBtn.png",
-			"resources/GaragePlus_demonKeysBtn.png",
-			"resources/GaragePlus_demonIcon.png",
-			"resources/GaragePlus_cpIcon.png",
+			"res/GaragePlus_modSettingsBtn.png",
+			"res/GaragePlus_gameSettingsBtn.png",
+			"res/GaragePlus_feedbackBtn.png",
+			"res/GaragePlus_profileBtn.png",
+			"res/GaragePlus_cpIcon.png",
 			"about-assets/modprev.png"
 		]
 	},
@@ -40,6 +37,12 @@
 		"feedback": {
             "name": "Feedback Button",
             "description": "Disable this to remove the feedback button.",
+            "type": "bool",
+            "default": true
+        },
+		"demon-keys": {
+            "name": "Demon Keys",
+            "description": "Demon Keys show up in the garage.",
             "type": "bool",
             "default": true
         }
