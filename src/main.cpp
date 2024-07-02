@@ -75,22 +75,12 @@ class $modify(GJGarageLayerModified, GJGarageLayer) {
                 }
                 this->getChildByID("username-label")->setPositionY(this->getChildByID("username-label")->getPositionY() - (winSize.height / 12));
                 
-                try {
-                    auto usernameLock = this->getChildByID("username-lock");
+                auto usernameLock = this->getChildByID("username-lock");
 
-                    if (usernameLock == nullptr) {
-                        throw std::runtime_error("Error: username-lock not found");
-                    }
-
+                if (usernameLock != nullptr) {
                     float currentPosY = usernameLock->getPositionY();
-
                     float newPosY = currentPosY - (winSize.height / 12);
-
                     usernameLock->setPositionY(newPosY);
-
-                } catch (const std::exception& e) {
-
-                    log::error("Exception caught: {}", e.what());
                 }
 
                 auto buttonsMenu = CCMenu::create();
