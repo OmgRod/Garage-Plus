@@ -41,10 +41,6 @@ public:
         return nullptr;
     }
 
-    virtual void keyBackClicked() {
-        onClick(nullptr);
-    }
-
     void onFeedbackClick(CCObject* sender) {
         auto descInput = dynamic_cast<CCTextInputNode*>(this->getChildByID("descInput"));
         if (!descInput)

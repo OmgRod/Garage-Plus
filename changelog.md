@@ -1,6 +1,7 @@
 # v2.0.0
 
 - Added new tags: "content" and "offline"
+- No longer uses Geode nightly
 - Added Demon Keys to garage
 - Added [Ko-Fi](https://ko-fi.com/omgrod) button (please support the creation of this mod)
 - Bugfixes:
