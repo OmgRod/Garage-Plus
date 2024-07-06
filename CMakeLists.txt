@@ -6,10 +6,11 @@ set(CMAKE_CXX_VISIBILITY_PRESET hidden)
 
 project(default VERSION 1.0.0)
 
+# Find all .cpp files in the src directory
+file(GLOB_RECURSE CPP_FILES src/*.cpp)
+
 # Set up the mod binary
-add_library(${PROJECT_NAME} SHARED
-    src/main.cpp
-)
+add_library(${PROJECT_NAME} SHARED ${CPP_FILES})
 
 if (NOT DEFINED ENV{GEODE_SDK})
     message(FATAL_ERROR "Unable to find Geode SDK! Please define GEODE_SDK environment variable to point to Geode")

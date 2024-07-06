@@ -1,5 +1,6 @@
 # v2.0.0
 
+- Removed Creator Points error messages - check console for errors
 - Added new tags: "content" and "offline"
 - No longer uses Geode nightly
 - Added Demon Keys to garage

@@ -1,5 +1,5 @@
 {
-	"geode": "3.1.1",
+	"geode": "3.2.0",
 	"version": "v2.0.0-alpha.3",
 	"gd": {
 		"win": "2.206",
@@ -43,6 +43,12 @@
 		"demon-keys": {
             "name": "Demon Keys",
             "description": "Demon Keys show up in the garage.",
+            "type": "bool",
+            "default": true
+        },
+		"achievement-count": {
+            "name": "Achievement Count",
+            "description": "Percentage of completed Achievement show up in the garage.",
             "type": "bool",
             "default": true
         }
