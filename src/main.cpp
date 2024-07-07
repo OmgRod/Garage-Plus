@@ -67,7 +67,7 @@ class $modify(GJGarageLayerModified, GJGarageLayer) {
                 "achievements"_spr,
                 CCSprite::createWithSpriteFrameName("rankIcon_top10_001.png"),
                 static_cast<int>(AchievementManager::sharedState()->m_allAchievements->count()),
-                0.375
+                0.5
             );
 
             if (statMenu) {

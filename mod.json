@@ -48,7 +48,7 @@
         },
 		"achievement-count": {
             "name": "Achievement Count",
-            "description": "Percentage of completed Achievement show up in the garage.",
+            "description": "Percentage of completed Achievements show up in the garage.",
             "type": "bool",
             "default": true
         }
