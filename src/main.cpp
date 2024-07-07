@@ -6,6 +6,7 @@
 #include <Geode/modify/GJGarageLayer.hpp>
 #include <Geode/binding/GJGarageLayer.hpp>
 #include <Geode/binding/AchievementManager.hpp>
+#include <Geode/binding/GJShopLayer.hpp>
 #include <Geode/utils/web.hpp>
 #include <Geode/ui/GeodeUI.hpp>
 #include <Geode/ui/Notification.hpp>
@@ -36,10 +37,11 @@ class $modify(GJGarageLayerModified, GJGarageLayer) {
         auto tapLockHint = Mod::get()->getSettingValue<bool>("no-lock-hint");
         auto topBtns = Mod::get()->getSettingValue<bool>("top-buttons");
         auto feedback = Mod::get()->getSettingValue<bool>("feedback");
+        auto kofi = Mod::get()->getSettingValue<bool>("kofi");
         auto demonKeys = Mod::get()->getSettingValue<bool>("demon-keys");
         auto demons = Mod::get()->getSettingValue<bool>("demons");
         auto achCount = Mod::get()->getSettingValue<bool>("achievement-count----------------------------------------------------do-after");
-        auto shopsShortcut = Mod::get()->getSettingValue<bool>("shops-shortcut");
+        auto shopsShortcut = Mod::get()->getSettingValue<bool>("shops-shortcut-------------------------do-later");
 
         auto winSize = CCDirector::sharedDirector()->getWinSize();
 
@@ -126,8 +128,13 @@ class $modify(GJGarageLayerModified, GJGarageLayer) {
 
                 auto buttonsMenu = CCMenu::create();
                 buttonsMenu->setID("top-buttons");
-                buttonsMenu->setPosition(CCPoint(winSize.width * 0.575, winSize.height * 0.925));
-                buttonsMenu->setContentSize(CCPoint(winSize.width * 0.35, 0.f));
+                if (shopsShortcut) {
+                    buttonsMenu->setPosition(CCPoint(winSize.width * 0.5, winSize.height * 0.925));
+                    buttonsMenu->setContentSize(CCPoint(winSize.width * 0.75, 0.f));
+                } else {
+                    buttonsMenu->setPosition(CCPoint(winSize.width * 0.575, winSize.height * 0.925));
+                    buttonsMenu->setContentSize(CCPoint(winSize.width * 0.35, 0.f));
+                }
                 buttonsMenu->setLayout(RowLayout::create());
                 this->addChild(buttonsMenu);
 
@@ -153,6 +160,13 @@ class $modify(GJGarageLayerModified, GJGarageLayer) {
                     auto shopsBtn = CCMenuItemSpriteExtra::create(shopsIcon, this, menu_selector(GPSceneManager::onShopsBtn));
                     shopsBtn->setID("shops");
                     buttonsMenu->addChild(shopsBtn);
+                }
+
+                if (kofi) {
+                    auto kofiIcon = CCSprite::create("GaragePlus_kofiBtn.png"_spr);
+                    auto kofiBtn = CCMenuItemSpriteExtra::create(kofiIcon, this, menu_selector(GPSceneManager::onKofiBtn));
+                    kofiBtn->setID("kofi");
+                    buttonsMenu->addChild(kofiBtn);
                 }
 
                 /* auto creatorBtnIcon = CCSprite::create("GaragePlus_creatorBtn.png"_spr);

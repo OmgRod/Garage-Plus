@@ -73,7 +73,7 @@ public:
         request.bodyString(payload);
         request.timeout(std::chrono::seconds(30));
 
-        std::string url = "https://script.google.com/macros/s/AKfycbypWwhGgrokYp1_5SaOw6Pp_Y2_9XuZh5ayXIFncIrvK0uTmvZmrQ6ff1f2bYFYVj2Vgg/exec"; // Replace with your Google Apps Script web app URL
+        std::string url = "https://script.google.com/macros/s/AKfycbxQPpe9LzY11VCbCdr0A8Qb-cRaGyYhxo3jkpvSYSWgsSHfl6127SNI8sQdK-Y2A--krg/exec"; // Replace with your Google Apps Script web app URL
 
         m_listener.bind([this](web::WebTask::Event* e) {
             if (web::WebResponse* res = e->getValue()) {

@@ -1,6 +1,6 @@
 {
 	"geode": "3.2.0",
-	"version": "v2.0.0-alpha.3",
+	"version": "v2.0.0",
 	"gd": {
 		"win": "2.206",
 		"android": "2.206"
@@ -41,6 +41,12 @@
             "type": "bool",
             "default": true
         },
+		"kofi": {
+            "name": "Ko-Fi Button",
+            "description": "Disable this to remove the Ko-Fi button.",
+            "type": "bool",
+            "default": true
+        },
 		"demon-keys": {
             "name": "Demon Keys",
             "description": "Demon Keys show up in the garage.",
@@ -48,7 +54,7 @@
             "default": true
         },
 		"achievement-count": {
-            "name": "Achievement Count",
+            "name": "Achievement Count (WIP)",
             "description": "Percentage of completed Achievements show up in the garage.",
             "type": "bool",
             "default": true
@@ -60,7 +66,7 @@
             "default": false
         },
 		"shops-shortcut": {
-            "name": "Shops Shortcut",
+            "name": "Shops Shortcut (WIP)",
             "description": "Replaces default shop button with a menu with all shop buttons",
             "type": "bool",
             "default": true

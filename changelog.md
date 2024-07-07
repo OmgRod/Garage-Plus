@@ -1,7 +1,6 @@
 # v2.0.0
 
 - Removed Creator Points error messages - check console for errors
-- Added Shop Shortcuts
 - Added Demons to garage
 - Updated Feedback API (again)
 - Added new tags: "content" and "offline"

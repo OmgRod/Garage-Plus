@@ -3,6 +3,7 @@
 #include <chrono>
 #include <iostream>
 #include <Geode/Geode.hpp>
+#include <Geode/binding/GJShopLayer.hpp>
 
 using namespace geode::prelude;
 
@@ -44,6 +45,7 @@ public:
 
         auto bg = CCSprite::create("GaragePlus_shopsBG.png"_spr);
         bg->setPosition({winSize.width / 2, winSize.height / 2});
+        bg->setID("background");
 
         {
             float contentWidth = bg->getContentWidth();
@@ -62,6 +64,12 @@ public:
         backBtn->setPosition(winSize.width * -0.45, winSize.height * 0.4);
         backBtn->setID("back-btn");
         menu->addChild(backBtn);
+
+        auto shopSignBtnSpr = CCSprite::createWithSpriteFrameName("shopSign_001.png");
+        auto shopSignBtn = CCMenuItemSpriteExtra::create(
+            shopSignBtnSpr, this, menu_selector(GJGarageLayer::onShop)
+        );
+        menu->addChild(shopSignBtn);
 
         this->addChild(bg);
         this->addChild(menu);

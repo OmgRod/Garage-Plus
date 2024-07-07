@@ -67,6 +67,10 @@ public:
         CCDirector::sharedDirector()->replaceScene(scenePrev);
     }
 
+    void onKofiBtn(CCObject* sender) {
+        geode::utils::web::openLinkInBrowser("https://ko-fi.com/omgrod");
+    }
+
     void demonInfo(CCObject* sender)
     {
         FLAlertLayer::create("Garage Plus", "This feature may or may not be coming soon", "OK")->show();
