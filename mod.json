@@ -1,18 +1,13 @@
 {
 	"geode": "3.2.0",
-	"version": "v2.0.0-alpha.3",
+	"version": "v2.0.0-alpha.4",
 	"gd": {
 		"win": "2.206",
 		"android": "2.206"
 	},
 	"resources": {
 		"sprites": [
-			"res/GaragePlus_modSettingsBtn.png",
-			"res/GaragePlus_gameSettingsBtn.png",
-			"res/GaragePlus_feedbackBtn.png",
-			"res/GaragePlus_profileBtn.png",
-			"res/GaragePlus_cpIcon.png",
-			"about-assets/modprev.png"
+			"res/sprites/*.png"
 		]
 	},
 	"settings": {
@@ -49,6 +44,12 @@
 		"achievement-count": {
             "name": "Achievement Count",
             "description": "Percentage of completed Achievements show up in the garage.",
+            "type": "bool",
+            "default": true
+        },
+		"shops-shortcut": {
+            "name": "Shops Shortcut",
+            "description": "Replaces default shop button with a menu with all shop buttons",
             "type": "bool",
             "default": true
         }

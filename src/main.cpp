@@ -14,6 +14,7 @@
 
 #include "GPFeedbackLayer.hpp"
 #include "GPSceneManager.hpp"
+#include "GPShopsLayer.hpp"
 
 using namespace geode::prelude;
 
@@ -36,12 +37,20 @@ class $modify(GJGarageLayerModified, GJGarageLayer) {
         auto topBtns = Mod::get()->getSettingValue<bool>("top-buttons");
         auto feedback = Mod::get()->getSettingValue<bool>("feedback");
         auto demonKeys = Mod::get()->getSettingValue<bool>("demon-keys");
-        auto achCount = Mod::get()->getSettingValue<bool>("achievement-count");
+        auto achCount = Mod::get()->getSettingValue<bool>("achievement-count----------------------------------------------------do-after");
+        auto shopsShortcut = Mod::get()->getSettingValue<bool>("shops-shortcut");
 
         auto winSize = CCDirector::sharedDirector()->getWinSize();
 
         if (cp) {
             GJGarageLayerModified::refreshCP(nullptr, false);
+        }
+
+        if (shopsShortcut) {
+            auto topLeftMenu = this->getChildByID("top-left-menu");
+            auto oldShopRope = topLeftMenu->getChildByID("shop-button");
+
+            oldShopRope->setVisible(false);
         }
 
         if (demonKeys) {
@@ -123,6 +132,13 @@ class $modify(GJGarageLayerModified, GJGarageLayer) {
                     auto feedbackBtn = CCMenuItemSpriteExtra::create(feedbackIcon, this, menu_selector(GPSceneManager::onFeedbackBtn));
                     feedbackBtn->setID("feedback");
                     buttonsMenu->addChild(feedbackBtn);
+                }
+
+                if (shopsShortcut) {
+                    auto shopsIcon = CCSprite::create("GaragePlus_shopsBtn.png"_spr);
+                    auto shopsBtn = CCMenuItemSpriteExtra::create(shopsIcon, this, menu_selector(GPSceneManager::onShopsBtn));
+                    shopsBtn->setID("shops");
+                    buttonsMenu->addChild(shopsBtn);
                 }
 
                 /* auto creatorBtnIcon = CCSprite::create("GaragePlus_creatorBtn.png"_spr);

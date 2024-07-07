@@ -1,3 +1,5 @@
+#pragma once
+
 #include <chrono>
 #include <iostream>
 #include <Geode/Geode.hpp>
@@ -6,6 +8,8 @@
 #include <Geode/utils/web.hpp>
 #include <Geode/ui/GeodeUI.hpp>
 #include <Geode/ui/Notification.hpp>
+
+#include "GPShopsLayer.hpp"
 
 using namespace geode::prelude;
 
@@ -54,6 +58,12 @@ public:
     void onFeedbackBtn(CCObject* sender)
     {
         auto scenePrev = CCTransitionFade::create(0.5f, GPFeedbackLayer::scene());
+        CCDirector::sharedDirector()->replaceScene(scenePrev);
+    }
+
+    void onShopsBtn(CCObject* sender)
+    {
+        auto scenePrev = CCTransitionFade::create(0.5f, GPShopsLayer::scene());
         CCDirector::sharedDirector()->replaceScene(scenePrev);
     }
 
