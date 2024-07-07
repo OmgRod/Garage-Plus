@@ -1,9 +1,13 @@
 # v2.0.0
 
 - Removed Creator Points error messages - check console for errors
+- Added Shop Shortcuts
+- Added Demons to garage
+- Updated Feedback API (again)
 - Added new tags: "content" and "offline"
 - No longer uses Geode nightly
 - Added Demon Keys to garage
+- Added Icon + Color Hack - Enable in settings
 - Added [Ko-Fi](https://ko-fi.com/omgrod) button (please support the creation of this mod)
 - Bugfixes:
     - Separate Dual Icons mod - Moved down hitboxes and arrows

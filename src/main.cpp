@@ -37,6 +37,7 @@ class $modify(GJGarageLayerModified, GJGarageLayer) {
         auto topBtns = Mod::get()->getSettingValue<bool>("top-buttons");
         auto feedback = Mod::get()->getSettingValue<bool>("feedback");
         auto demonKeys = Mod::get()->getSettingValue<bool>("demon-keys");
+        auto demons = Mod::get()->getSettingValue<bool>("demons");
         auto achCount = Mod::get()->getSettingValue<bool>("achievement-count----------------------------------------------------do-after");
         auto shopsShortcut = Mod::get()->getSettingValue<bool>("shops-shortcut");
 
@@ -44,6 +45,19 @@ class $modify(GJGarageLayerModified, GJGarageLayer) {
 
         if (cp) {
             GJGarageLayerModified::refreshCP(nullptr, false);
+        }
+
+        if (demons) {
+            // Credits to Capeling for this code (Demons in Garage)
+
+            auto statMenu = this->getChildByID("capeling.garage-stats-menu/stats-menu");
+
+            auto myStatItem = StatsDisplayAPI::getNewItem("demons"_spr, CCSprite::create("GaragePlus_demonIcon.png"_spr), GameStatsManager::sharedState()->getStat("5"), 1.f);
+
+            if (statMenu) {
+                statMenu->addChild(myStatItem);
+                statMenu->updateLayout();
+            }
         }
 
         if (shopsShortcut) {
