@@ -8,7 +8,10 @@
 	"resources": {
 		"sprites": [
 			"res/sprites/*.png"
-		]
+		],
+        "files": [
+            "res/videos/*"
+        ]
 	},
 	"settings": {
 		"cp": {

@@ -10,6 +10,7 @@
 #include <Geode/ui/Notification.hpp>
 
 #include "GPShopsLayer.hpp"
+#include "GPVideoPlayer/VideoPlayer.hpp"
 
 using namespace geode::prelude;
 
@@ -68,7 +69,11 @@ public:
     }
 
     void onKofiBtn(CCObject* sender) {
-        geode::utils::web::openLinkInBrowser("https://ko-fi.com/omgrod");
+        // geode::utils::web::openLinkInBrowser("https://ko-fi.com/omgrod");
+        std::filesystem::path videoPath = Mod::get()->getResourcesDir() / "kofiPromo.mp4";
+
+        // Create a VideoPlayer instance
+        auto player = videoplayer::VideoPlayer::create(videoPath, true);
     }
 
     void demonInfo(CCObject* sender)
