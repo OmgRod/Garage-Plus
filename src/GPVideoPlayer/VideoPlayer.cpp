@@ -212,9 +212,7 @@ namespace videoplayer {
             GLuint texture = self->m_textures[i];
 
             glActiveTexture(GL_TEXTURE0 + i);
-            glBindTexture(GL_TEXTURE_2
-
-D, texture);
+            glBindTexture(GL_TEXTURE_2D, texture);
 
             glTexImage2D(
                 GL_TEXTURE_2D, 0, GL_LUMINANCE, frames[i]->width, frames[i]->height, 0,
