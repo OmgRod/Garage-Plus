@@ -16,7 +16,8 @@
 #include "GPFeedbackLayer.hpp"
 #include "GPSceneManager.hpp"
 #include "GPShopsLayer.hpp"
-#include "GPVideoPlayer/VideoPlayer.hpp"
+#include "GPKofiLayer.hpp"
+#include "VideoPlayer.hpp"
 
 using namespace geode::prelude;
 

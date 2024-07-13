@@ -1,3 +1,7 @@
+# v2.1.0
+
+- Added Ko-fi promo video
+
 # v2.0.0
 
 - Removed Creator Points error messages - check console for errors
