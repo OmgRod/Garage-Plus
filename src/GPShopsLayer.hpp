@@ -4,14 +4,23 @@
 #include <iostream>
 #include <Geode/Geode.hpp>
 #include <Geode/binding/GJShopLayer.hpp>
+#include <Geode/modify/GJShopLayer.hpp>
 
 using namespace geode::prelude;
+
+class GPShopLayer;
 
 class GPShopsLayer : public CCLayer {
 public:
     struct Fields {
         EventListener<web::WebTask> m_listener;
     };
+
+    static CCScene* garageScene() {
+        auto scene = CCScene::create();
+        scene->addChild(GJGarageLayer::scene());
+        return scene;
+    }
 
     virtual void KeyBackClicked() {
         CCDirector::get()->popScene();
@@ -59,7 +68,7 @@ public:
         auto backBtn = CCMenuItemSpriteExtra::create(
             CCSprite::createWithSpriteFrameName("GJ_arrow_01_001.png"),
             this,
-            menu_selector(GPFeedbackLayer::onClick)
+            menu_selector(GPShopsLayer::onClick)
         );
         backBtn->setPosition(winSize.width * -0.45, winSize.height * 0.4);
         backBtn->setID("back-btn");
@@ -67,7 +76,7 @@ public:
 
         auto shopSignBtnSpr = CCSprite::createWithSpriteFrameName("shopSign_001.png");
         auto shopSignBtn = CCMenuItemSpriteExtra::create(
-            shopSignBtnSpr, this, menu_selector(GJGarageLayer::onShop)
+            shopSignBtnSpr, this, menu_selector(GPShopLayer::onShop1)
         );
         menu->addChild(shopSignBtn);
 
@@ -77,6 +86,40 @@ public:
         return true;
     }
 
+    void onClick(CCObject* sender) {
+        auto scenePrev = CCTransitionFade::create(0.5f, GPShopsLayer::garageScene());
+        CCDirector::sharedDirector()->replaceScene(scenePrev);
+    }
+
 private:
     geode::EventListener<web::WebTask> m_listener;
+};
+
+class GPShopLayer : public GJShopLayer {
+public:
+    void onBack(CCObject*) {
+        auto scenePrev = CCTransitionFade::create(0.5f, GPShopsLayer::scene());
+        CCDirector::sharedDirector()->replaceScene(scenePrev);
+    }
+
+    void onShop1(CCObject*) {
+        // Implement the functionality for onShop1 here
+        CCLOG("Shop1 button clicked");
+    }
+
+    static GPShopLayer* create() {
+        GPShopLayer* ret = new GPShopLayer();
+        if (ret && ret->init()) {
+            ret->autorelease();
+            return ret;
+        }
+        delete ret;
+        return nullptr;
+    }
+
+    static CCScene* scene(ShopType p0) {
+        auto scene = CCScene::create();
+        scene->addChild(GPShopLayer::create());
+        return scene;
+    }
 };

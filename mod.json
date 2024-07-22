@@ -1,6 +1,6 @@
 {
 	"geode": "3.2.0",
-	"version": "v2.1.0",
+	"version": "v2.2.0",
 	"gd": {
 		"win": "2.206",
 		"android": "2.206"
@@ -69,7 +69,7 @@
             "default": false
         },
 		"shops-shortcut": {
-            "name": "Shops Shortcut (WIP)",
+            "name": "Shops Shortcut",
             "description": "Replaces default shop button with a menu with all shop buttons",
             "type": "bool",
             "default": true

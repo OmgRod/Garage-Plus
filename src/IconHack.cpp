@@ -1,5 +1,3 @@
-// Icon Hack - Doesn't work yet somehow
-
 #include <Geode/Geode.hpp>
 #include <Geode/modify/GameManager.hpp>
 

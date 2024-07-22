@@ -1,3 +1,9 @@
+# v2.2.0
+
+- Added shop shortcut menu
+- Added achievement count
+- Added Icon Kit Save
+
 # v2.1.0
 
 - Added Ko-fi promo video

@@ -43,7 +43,7 @@ class $modify(GJGarageLayerModified, GJGarageLayer) {
         auto demonKeys = Mod::get()->getSettingValue<bool>("demon-keys");
         auto demons = Mod::get()->getSettingValue<bool>("demons");
         auto achCount = Mod::get()->getSettingValue<bool>("achievement-count----------------------------------------------------do-after");
-        auto shopsShortcut = Mod::get()->getSettingValue<bool>("shops-shortcut-------------------------do-later");
+        auto shopsShortcut = Mod::get()->getSettingValue<bool>("shops-shortcut");
 
         auto winSize = CCDirector::sharedDirector()->getWinSize();
 
