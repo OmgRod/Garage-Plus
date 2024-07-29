@@ -1,3 +1,7 @@
+# v2.1.2
+
+- Fixed fatal error
+
 # v2.1.1
 
 - Added support for Geodify mod
