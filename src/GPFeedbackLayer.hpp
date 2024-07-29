@@ -3,7 +3,6 @@
 #include <chrono>
 #include <iostream>
 #include <Geode/Geode.hpp>
-#include <Geode/modify/GJGarageLayer.hpp>
 #include <Geode/binding/GJGarageLayer.hpp>
 #include <Geode/utils/web.hpp>
 #include <Geode/ui/GeodeUI.hpp>
