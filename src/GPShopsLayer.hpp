@@ -1,125 +1,102 @@
-#pragma once
+// #pragma once
 
-#include <chrono>
-#include <iostream>
-#include <Geode/Geode.hpp>
-#include <Geode/binding/GJShopLayer.hpp>
-#include <Geode/modify/GJShopLayer.hpp>
+// #include <chrono>
+// #include <iostream>
+// #include <Geode/Geode.hpp>
+// #include <Geode/binding/GJShopLayer.hpp>
+// #include <Geode/modify/GJShopLayer.hpp>
+// #include "GPShopLayer.hpp"
 
-using namespace geode::prelude;
+// using namespace geode::prelude;
 
-class GPShopLayer;
+// class GPShopsLayer : public CCLayer {
+// public:
+//     // Constructor
+//     GPShopsLayer() : CCLayer() {}
 
-class GPShopsLayer : public CCLayer {
-public:
-    struct Fields {
-        EventListener<web::WebTask> m_listener;
-    };
+//     // Method to create the garage scene
+//     static CCScene* garageScene() {
+//         auto scene = CCScene::create();
+//         scene->addChild(GJGarageLayer::scene());
+//         return scene;
+//     }
 
-    static CCScene* garageScene() {
-        auto scene = CCScene::create();
-        scene->addChild(GJGarageLayer::scene());
-        return scene;
-    }
+//     // Key back click handler
+//     virtual void KeyBackClicked() {
+//         CCDirector::get()->popScene();
+//     }
 
-    virtual void KeyBackClicked() {
-        CCDirector::get()->popScene();
-    }
+//     // Method to create the main scene
+//     static CCScene* scene() {
+//         auto scene = CCScene::create();
+//         scene->addChild(GPShopsLayer::create());
+//         return scene;
+//     }
 
-    static CCScene* scene() {
-        auto scene = CCScene::create();
-        scene->addChild(GPShopsLayer::create());
-        return scene;
-    }
-
-    static GPShopsLayer* create() {
-        GPShopsLayer* ret = new GPShopsLayer();
-        if (ret && ret->init()) {
-            ret->autorelease();
-            return ret;
-        }
-        delete ret;
-        return nullptr;
-    }
+//     // Factory method to create an instance of GPShopsLayer
+//     static GPShopsLayer* create() {
+//         GPShopsLayer* ret = new GPShopsLayer();
+//         if (ret && ret->init()) {
+//             ret->autorelease();
+//             return ret;
+//         }
+//         delete ret;
+//         return nullptr;
+//     }
     
-    bool init() {
-        if (!CCLayer::init())
-            return false;
+//     // Initialization method
+//     bool init() {
+//         if (!CCLayer::init())
+//             return false;
 
-        setKeypadEnabled(true);
+//         setKeypadEnabled(true);
 
-        auto winSize = CCDirector::sharedDirector()->getWinSize();
+//         auto winSize = CCDirector::sharedDirector()->getWinSize();
 
-        auto menu = CCMenu::create();
+//         auto menu = CCMenu::create();
 
-        auto bg = CCSprite::create("GaragePlus_shopsBG.png"_spr);
-        bg->setPosition({winSize.width / 2, winSize.height / 2});
-        bg->setID("background");
+//         auto bg = CCSprite::create("GaragePlus_shopsBG.png"_spr);
+//         bg->setPosition({winSize.width / 2, winSize.height / 2});
+//         bg->setID("background");
 
-        {
-            float contentWidth = bg->getContentWidth();
-            float contentHeight = bg->getContentHeight();
-            float winWidth = winSize.width;
-            float winHeight = winSize.height;
-            bg->setScaleX(winWidth / contentWidth);
-            bg->setScaleY(winHeight / contentHeight);
-        }
+//         {
+//             float contentWidth = bg->getContentWidth();
+//             float contentHeight = bg->getContentHeight();
+//             float winWidth = winSize.width;
+//             float winHeight = winSize.height;
+//             bg->setScaleX(winWidth / contentWidth);
+//             bg->setScaleY(winHeight / contentHeight);
+//         }
 
-        auto backBtn = CCMenuItemSpriteExtra::create(
-            CCSprite::createWithSpriteFrameName("GJ_arrow_01_001.png"),
-            this,
-            menu_selector(GPShopsLayer::onClick)
-        );
-        backBtn->setPosition(winSize.width * -0.45, winSize.height * 0.4);
-        backBtn->setID("back-btn");
-        menu->addChild(backBtn);
+//         auto backBtn = CCMenuItemSpriteExtra::create(
+//             CCSprite::createWithSpriteFrameName("GJ_arrow_01_001.png"),
+//             this,
+//             menu_selector(GPShopsLayer::onClick)
+//         );
+//         backBtn->setPosition(winSize.width * -0.45, winSize.height * 0.4);
+//         backBtn->setID("back-btn");
+//         menu->addChild(backBtn);
 
-        auto shopSignBtnSpr = CCSprite::createWithSpriteFrameName("shopSign_001.png");
-        auto shopSignBtn = CCMenuItemSpriteExtra::create(
-            shopSignBtnSpr, this, menu_selector(GPShopLayer::onShop1)
-        );
-        menu->addChild(shopSignBtn);
+//         auto shopSignBtnSpr = CCSprite::createWithSpriteFrameName("shopSign_001.png");
+//         auto shopSignBtn = CCMenuItemSpriteExtra::create(
+//             shopSignBtnSpr, this, menu_selector(GPShopsLayer::onShop1)
+//         );
+//         menu->addChild(shopSignBtn);
 
-        this->addChild(bg);
-        this->addChild(menu);
+//         this->addChild(bg);
+//         this->addChild(menu);
 
-        return true;
-    }
+//         return true;
+//     }
 
-    void onClick(CCObject* sender) {
-        auto scenePrev = CCTransitionFade::create(0.5f, GPShopsLayer::garageScene());
-        CCDirector::sharedDirector()->replaceScene(scenePrev);
-    }
+//     // Click handler
+//     void onClick(CCObject* sender) {
+//         auto scenePrev = CCTransitionFade::create(0.5f, GPShopsLayer::garageScene());
+//         CCDirector::sharedDirector()->replaceScene(scenePrev);
+//     }
 
-private:
-    geode::EventListener<web::WebTask> m_listener;
-};
-
-class GPShopLayer : public GJShopLayer {
-public:
-    void onBack(CCObject*) {
-        auto scenePrev = CCTransitionFade::create(0.5f, GPShopsLayer::scene());
-        CCDirector::sharedDirector()->replaceScene(scenePrev);
-    }
-
-    void onShop1(CCObject*) {
-        // Implement the functionality for onShop1 here
-        CCLOG("Shop1 button clicked");
-    }
-
-    static GPShopLayer* create() {
-        GPShopLayer* ret = new GPShopLayer();
-        if (ret && ret->init()) {
-            ret->autorelease();
-            return ret;
-        }
-        delete ret;
-        return nullptr;
-    }
-
-    static CCScene* scene(ShopType p0) {
-        auto scene = CCScene::create();
-        scene->addChild(GPShopLayer::create());
-        return scene;
-    }
-};
+//     // Shop button click handler (assuming you have such a method)
+//     void onShop1(CCObject* sender) {
+//         // Implement your onShop1 logic here
+//     }
+// };

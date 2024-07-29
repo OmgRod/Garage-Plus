@@ -110,6 +110,7 @@ public:
 
         auto winSize = CCDirector::sharedDirector()->getWinSize();
         auto menu = CCMenu::create();
+        menu->setID("menu");
 
         auto corner1 = CCSprite::createWithSpriteFrameName("GJ_sideArt_001.png");
         corner1->setPosition(CCPoint(winSize.width * -0.5, winSize.height * -0.5));
@@ -128,7 +129,7 @@ public:
         gameBgSpr->setScale(2.f);
         gameBgSpr->setZOrder(-1);
         gameBgSpr->setPositionY(winSize.height / -2);
-        gameBgSpr->setID("gameBgSpr");
+        gameBgSpr->setID("background");
         menu->addChild(gameBgSpr);
 
         auto squareSpr = CCScale9Sprite::create("GJ_square01.png");

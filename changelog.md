@@ -1,8 +1,7 @@
-# v2.2.0
+# v2.1.1
 
-- Added shop shortcut menu
-- Added achievement count
-- Added Icon Kit Save
+- Added support for Geodify mod
+- Added Geode v3.3.1 support
 
 # v2.1.0
 

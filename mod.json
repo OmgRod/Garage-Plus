@@ -1,6 +1,6 @@
 {
-	"geode": "3.2.0",
-	"version": "v2.2.0",
+	"geode": "3.3.1",
+	"version": "v2.1.1",
 	"gd": {
 		"win": "2.206",
 		"android": "2.206"
@@ -99,5 +99,12 @@
 	"links": {
 		"community": "https://discord.gg/EXkwkm2sZ9",
 		"source": "https://github.com/0mgRod/Garage-Plus"
-	}
+	},
+    "incompatibilities": [
+        {
+            "id": "devcmb.cleanermenu",
+            "importance": "breaking",
+            "version": "*"
+        }
+    ]
 }

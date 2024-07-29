@@ -69,8 +69,8 @@ public:
 
     void onShopsBtn(CCObject* sender)
     {
-        auto scenePrev = CCTransitionFade::create(0.5f, GPShopsLayer::scene());
-        CCDirector::sharedDirector()->replaceScene(scenePrev);
+        // auto scenePrev = CCTransitionFade::create(0.5f, GPShopsLayer::scene());
+        // CCDirector::sharedDirector()->replaceScene(scenePrev);
     }
 
     void demonInfo(CCObject* sender)

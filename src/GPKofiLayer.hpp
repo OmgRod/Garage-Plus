@@ -66,7 +66,7 @@ public:
         gameBgSpr->setZOrder(-99999);
         gameBgSpr->setPositionY(winSize.height / -2);
         gameBgSpr->setPositionX(winSize.width / 2);
-        gameBgSpr->setID("gameBgSpr");
+        gameBgSpr->setID("background");
         this->addChild(gameBgSpr);
         
         std::filesystem::path videoPath = Mod::get()->getResourcesDir() / "kofiPromo.mpg";
