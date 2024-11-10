@@ -7,7 +7,8 @@
 	},
 	"resources": {
 		"sprites": [
-			"res/sprites/*.png"
+			"res/sprites/*.png",
+   "about-assets/*.png"
 		],
         "files": [
             "res/videos/*"
