@@ -1,3 +1,11 @@
+# v2.2.2
+
+- Updated to Geode v4.0.0 (GD 2.2073)
+
+# v2.1.2
+
+- Fixed fatal error
+
 # v2.1.1
 
 - Added support for Geodify mod
