@@ -1,6 +1,6 @@
-# v2.2.2
+# v2.2.0
 
-- Updated to Geode v4.0.0 (GD 2.2073)
+- Updated to Geode v4
 
 # v2.1.2
 
