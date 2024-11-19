@@ -11,6 +11,7 @@
 
 #include "GPShopsLayer.hpp"
 #include "GPKofiLayer.hpp"
+#include "GPFeedbackLayer.hpp" // Include this header
 
 using namespace geode::prelude;
 

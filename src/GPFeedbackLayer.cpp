@@ -93,7 +93,6 @@ bool GPFeedbackLayer::init() {
 
     auto winSize = CCDirector::sharedDirector()->getWinSize();
     auto menu = CCMenu::create();
-    menu->setID("menu");
 
     auto corner1 = CCSprite::createWithSpriteFrameName("GJ_sideArt_001.png");
     corner1->setPosition(CCPoint(winSize.width * -0.5, winSize.height * -0.5));
@@ -112,7 +111,7 @@ bool GPFeedbackLayer::init() {
     gameBgSpr->setScale(2.f);
     gameBgSpr->setZOrder(-1);
     gameBgSpr->setPositionY(winSize.height / -2);
-    gameBgSpr->setID("background");
+    gameBgSpr->setID("gameBgSpr");
     menu->addChild(gameBgSpr);
 
     auto squareSpr = CCScale9Sprite::create("GJ_square01.png");
@@ -151,7 +150,7 @@ bool GPFeedbackLayer::init() {
     descBg->setContentSize(CCPoint(winSize.width * 0.6, winSize.height * 0.5));
     descBg->setID("descBg");
     descBg->setZOrder(1);
-    descBg->setColor(ccColor3B(0, 0, 0));
+    descBg->setColor(ccc3(0, 0, 0)); // Corrected this line
     descBg->setOpacity(60);
     this->addChild(descBg);
 

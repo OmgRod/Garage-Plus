@@ -1,4 +1,5 @@
 #include "GPKofiLayer.hpp"
+#include "GPFeedbackLayer.hpp" // Include this header
 
 void GPKofiLayer::KeyBackClicked() {
     CCDirector::get()->popScene();
@@ -68,7 +69,7 @@ bool GPKofiLayer::init() {
     auto backBtn = CCMenuItemSpriteExtra::create(
         CCSprite::createWithSpriteFrameName("GJ_arrow_01_001.png"),
         this,
-        menu_selector(GPFeedbackLayer::onClick)
+        menu_selector(GPFeedbackLayer::onClick) // Corrected this line
     );
     backBtn->setPosition(winSize.width * -0.45, winSize.height * 0.4);
     backBtn->setID("back-btn");
