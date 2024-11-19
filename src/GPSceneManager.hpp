@@ -25,71 +25,19 @@ private:
     Fields* m_fields;
 
 public:
-    GPSceneManager() : m_fields(new Fields()) {}
+    GPSceneManager();
+    ~GPSceneManager();
 
-    ~GPSceneManager() {
-        delete m_fields;
-    }
+    static GPSceneManager* create();
 
-    static GPSceneManager* create()
-    {
-        GPSceneManager* ret = new GPSceneManager();
-        if (ret && ret->init())
-        {
-            ret->autorelease();
-            return ret;
-        }
-        delete ret;
-        return nullptr;
-    }
+    bool init();
 
-    bool init()
-    {
-        if (!CCLayer::init())
-            return false;
-
-        return true;
-    }
-
-    void onKofiBtn(CCObject* sender) {
-        auto scenePrev = CCTransitionFade::create(0.5f, GPKofiLayer::scene());
-        CCDirector::sharedDirector()->replaceScene(scenePrev);
-    }
-
-    void onModSettings(CCObject* sender)
-    {
-        openSettingsPopup(Mod::get());
-    }
-
-    void onFeedbackBtn(CCObject* sender)
-    {
-        auto scenePrev = CCTransitionFade::create(0.5f, GPFeedbackLayer::scene());
-        CCDirector::sharedDirector()->replaceScene(scenePrev);
-    }
-
-    void onShopsBtn(CCObject* sender)
-    {
-        // auto scenePrev = CCTransitionFade::create(0.5f, GPShopsLayer::scene());
-        // CCDirector::sharedDirector()->replaceScene(scenePrev);
-    }
-
-    void demonInfo(CCObject* sender)
-    {
-        FLAlertLayer::create("Garage Plus", "This feature may or may not be coming soon", "OK")->show();
-    }
-
-    void starsInfo(CCObject* sender)
-    {
-        FLAlertLayer::create("Garage Plus", "This feature may or may not be coming soon", "OK")->show();
-    }
-
-    void moonsInfo(CCObject* sender)
-    {
-        FLAlertLayer::create("Garage Plus", "This feature may or may not be coming soon", "OK")->show();
-    }
-
-    void onDisabled(CCObject* sender)
-    {
-        FLAlertLayer::create("Garage Plus", "This feature is currently disabled possibly due to a bug.", "OK")->show();
-    }
+    void onKofiBtn(CCObject* sender);
+    void onModSettings(CCObject* sender);
+    void onFeedbackBtn(CCObject* sender);
+    void onShopsBtn(CCObject* sender);
+    void demonInfo(CCObject* sender);
+    void starsInfo(CCObject* sender);
+    void moonsInfo(CCObject* sender);
+    void onDisabled(CCObject* sender);
 };

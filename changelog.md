@@ -1,6 +1,11 @@
+# v2.2.1
+
+- Ported to Geode v4 release
+- Code optimisations
+
 # v2.2.0
 
-- Updated to Geode v4
+- Updated to Geode v4 beta
 
 # v2.1.2
 
