@@ -1,6 +1,7 @@
 # v2.2.1
 
 - Actual v2.2.0 release
+- Added macOS support
 
 # v2.2.0
 
