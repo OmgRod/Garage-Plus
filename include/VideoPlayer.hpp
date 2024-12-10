@@ -90,7 +90,7 @@ namespace videoplayer {
          * @param y The Y position of the video player
          */
 
-        void setPosition(float x, float y);
+        void setPosition(float x, float y) override;
 
         /**
          * @brief Modifies the content size of the video player to fit a given size, maintaining aspect ratio
