@@ -1,3 +1,7 @@
+# v2.2.1
+
+- Actual v2.2.0 release
+
 # v2.2.0
 
 - Updated to Geode v4
