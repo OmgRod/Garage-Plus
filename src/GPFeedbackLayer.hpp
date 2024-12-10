@@ -167,7 +167,7 @@ public:
         descBg->setContentSize(CCPoint(winSize.width * 0.6, winSize.height * 0.5));
         descBg->setID("descBg");
         descBg->setZOrder(1);
-        descBg->setColor(ccColor3B(0, 0, 0));
+        descBg->setColor({0, 0, 0});
         descBg->setOpacity(60);
         this->addChild(descBg);
 
