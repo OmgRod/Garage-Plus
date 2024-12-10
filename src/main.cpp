@@ -93,7 +93,7 @@ class $modify(GJGarageLayerModified, GJGarageLayer) {
             auto myStatItem = StatsDisplayAPI::getNewItem(
                 "achievements"_spr,
                 CCSprite::createWithSpriteFrameName("rankIcon_top10_001.png"),
-                static_cast<int>(AchievementManager::sharedState()->m_allAchievements->count()),
+                typeinfo_cast<int>(AchievementManager::sharedState()->m_allAchievements->count()),
                 0.5
             );
 

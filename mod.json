@@ -1,5 +1,5 @@
 {
-	"geode": "4.0.0-alpha.1",
+	"geode": "4.0.1",
 	"version": "v2.2.0",
 	"gd": {
 		"win": "2.2074",
@@ -17,7 +17,7 @@
 	"settings": {
 		"cp": {
             "name": "Creator Points",
-            "description": "Creator Points show up in the garage. Click the CP icon to refresh. (Only available to people logged in)",
+            "description": "Creator Points show up in the garage. Click the Creator Points icon to refresh. (Only available to people logged in)",
             "type": "bool",
             "default": true
         },
@@ -87,7 +87,7 @@
 	},
 	{
 		"id": "capeling.garage-stats-menu",
-		"version": ">=v1.0.1",
+		"version": ">=v1.0.2",
 		"importance": "required"
 	}],
 	"issues": {
