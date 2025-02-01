@@ -1,3 +1,7 @@
+# v2.2.2
+
+- good job, rod!
+
 # v2.2.1
 
 - Actual v2.2.0 release
