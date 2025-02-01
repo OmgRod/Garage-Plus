@@ -1,6 +1,6 @@
 # v2.2.2
 
-- good job, rod!
+- good job, rod! (add macOS Intel support)
 
 # v2.2.1
 
