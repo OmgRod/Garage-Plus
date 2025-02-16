@@ -4,6 +4,8 @@
 #include "VideoPlayer.hpp"
 #include <math.h>
 
+#include <Geode/Geode.hpp>
+
 using namespace geode::prelude;
 using namespace cocos2d;
 

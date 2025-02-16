@@ -4,9 +4,6 @@
 #include <Geode/Geode.hpp>
 #include <Geode/loader/Loader.hpp>
 #include <Geode/modify/GJGarageLayer.hpp>
-#include <Geode/binding/GJGarageLayer.hpp>
-#include <Geode/binding/AchievementManager.hpp>
-#include <Geode/binding/GJShopLayer.hpp>
 #include <Geode/utils/web.hpp>
 #include <Geode/ui/GeodeUI.hpp>
 #include <Geode/ui/Notification.hpp>

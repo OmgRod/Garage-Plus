@@ -1,3 +1,10 @@
+# v2.2.3
+
+- Deprecated
+```
+Thank you all for downloading this mod <3
+```
+
 # v2.2.2
 
 - good job, rod! (add macOS Intel support)
