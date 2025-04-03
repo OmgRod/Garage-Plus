@@ -1,9 +1,14 @@
+# v2.2.4
+
+- Added iOS support
+
 # v2.2.3
 
 - Deprecated
 ```
 Thank you all for downloading this mod <3
 ```
+### This did not happen - Garage Plus will still get some minor updates
 
 # v2.2.2
 
